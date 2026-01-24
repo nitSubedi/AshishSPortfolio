@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Only keep these clean basics */
+:root {
+  font-family: 'Inter', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #0a0a0a; /* Your cinema black */
+  color: #ffffff;
+  width: 100%; /* Ensure full width */
+  overflow-x: hidden; /* Prevent accidental horizontal scrollbars */
+}
