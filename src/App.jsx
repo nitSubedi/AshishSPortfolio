@@ -8,18 +8,21 @@ import Hero from './components/Hero';
 import Portfolio from './components/Portfolio';
 import Contact from './components/Contact';
 
-const Home = ({ featuredProject, visibleGroup, selectedProject, onOpenProject, onCloseProject }) => (
+const Home = ({ featuredProject, visibleGroup, selectedProject, onOpenProject, onCloseProject, heroGridCategory }) => (
   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-    {/* Hide Hero if we are viewing a specific film project */}
-    {!featuredProject && <Hero />}
-    
-    <Portfolio 
-      featuredProject={featuredProject} 
-      visibleGroup={visibleGroup}       
-      selectedProject={selectedProject} 
-      onOpenProject={onOpenProject}     
-      onCloseProject={onCloseProject}   
-    />
+    {/* Show Hero if no featuredProject OR if showing hero grid */}
+    {(!featuredProject || heroGridCategory) && <Hero heroGridCategory={heroGridCategory} />}
+
+    {/* Only show Portfolio if NOT in hero grid mode */}
+    {!heroGridCategory && (
+      <Portfolio
+        featuredProject={featuredProject}
+        visibleGroup={visibleGroup}
+        selectedProject={selectedProject}
+        onOpenProject={onOpenProject}
+        onCloseProject={onCloseProject}
+      />
+    )}
     <footer className="md:hidden py-12 border-t border-white/10 text-center">
       <p className="text-xs text-gray-600 uppercase tracking-widest">© 2026 Ashish Shrestha. All rights reserved.</p>
     </footer>
@@ -31,8 +34,9 @@ function AppContent() {
   const navigate = useNavigate();
   
   // 1. Content State
-  const [featuredProject, setFeaturedProject] = useState(null); 
-  const [visibleGroup, setVisibleGroup] = useState(null);       
+  const [featuredProject, setFeaturedProject] = useState(null);
+  const [visibleGroup, setVisibleGroup] = useState(null);
+  const [heroGridCategory, setHeroGridCategory] = useState(null);
 
   // 2. Overlay State (Video Modal / Lightbox)
   const [selectedProject, setSelectedProject] = useState(null);
@@ -41,13 +45,24 @@ function AppContent() {
   const handleReset = () => {
     // 1. Reset URL to home
     if (location.pathname !== '/') navigate('/');
-    
+
     // 2. Clear all states to show original Hero
     setFeaturedProject(null);
     setVisibleGroup(null);
     setSelectedProject(null);
-    
+    setHeroGridCategory(null);
+
     // 3. Scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Handler for category-level clicks (Travel, Commercial)
+  const handleCategorySelect = (categoryName) => {
+    if (location.pathname !== '/') navigate('/');
+    setHeroGridCategory(categoryName);
+    setFeaturedProject(null);
+    setVisibleGroup(null);
+    setSelectedProject(null);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -86,30 +101,33 @@ function AppContent() {
   return (
     <div className="bg-cinema-black min-h-screen text-white font-sans selection:bg-white selection:text-black">
       {/* PASS THE RESET PROP HERE */}
-      <Sidebar 
-        onProjectSelect={handleSidebarSelection} 
-        onReset={handleReset} 
+      <Sidebar
+        onProjectSelect={handleSidebarSelection}
+        onCategorySelect={handleCategorySelect}
+        onReset={handleReset}
       />
-      
-      <MobileNav 
-        onReset={handleReset} 
-        onProjectSelect={handleSidebarSelection} 
+
+      <MobileNav
+        onReset={handleReset}
+        onProjectSelect={handleSidebarSelection}
+        onCategorySelect={handleCategorySelect}
       />
 
       <main className="md:ml-[33.33%] lg:ml-[25%] relative w-full md:w-2/3 lg:w-3/4">
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
-            <Route 
-              path="/" 
+            <Route
+              path="/"
               element={
-                <Home 
+                <Home
                   featuredProject={featuredProject}
                   visibleGroup={visibleGroup}
                   selectedProject={selectedProject}
-                  onOpenProject={handleCardClick} 
+                  onOpenProject={handleCardClick}
                   onCloseProject={handleCloseProject}
+                  heroGridCategory={heroGridCategory}
                 />
-              } 
+              }
             />
             <Route path="/contact" element={<Contact />} />
           </Routes>

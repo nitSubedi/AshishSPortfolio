@@ -89,7 +89,7 @@ export const projects = [
     id: 6,
     title: "Interschool Basketball",
     category:"Photography",
-    group: "sports",
+    group: "photos",
     year: "2020",
     type: "gallery",
     image: "/projects/Interschool-basketball/100A3808.JPG",

@@ -3,23 +3,34 @@ import { Link } from 'react-router-dom';
 import { Instagram, Mail, Linkedin, ArrowRight, ChevronDown, ChevronRight } from 'lucide-react';
 import { projects } from '../data';
 
-const Sidebar = ({ onProjectSelect, onReset }) => { // <--- Added onReset prop
+const HERO_GRID_CATEGORIES = ['travel', 'commercial'];
+
+const Sidebar = ({ onProjectSelect, onCategorySelect, onReset }) => {
   const [isWorkOpen, setIsWorkOpen] = useState(true);
-  
-  // State to track which sub-categories are open (Default: all open)
+
+  // State to track which sub-categories are open
   const [openCategories, setOpenCategories] = useState({
     film: false,
     photos: false,
-    sports: false,
     commercial: false,
-    travel: false
+    travel: false,
   });
 
   const toggleCategory = (category) => {
-    setOpenCategories(prev => ({
+    setOpenCategories((prev) => ({
       ...prev,
-      [category]: !prev[category]
+      [category]: !prev[category],
     }));
+  };
+
+  const handleCategoryClick = (category) => {
+    if (HERO_GRID_CATEGORIES.includes(category)) {
+      // Show all videos in hero for Travel/Commercial
+      if (onCategorySelect) onCategorySelect(category);
+    } else {
+      // Toggle expansion for other categories
+      toggleCategory(category);
+    }
   };
 
   // Helper to group projects
@@ -30,7 +41,7 @@ const Sidebar = ({ onProjectSelect, onReset }) => { // <--- Added onReset prop
     return acc;
   }, {});
 
-  const categories = ['film', 'travel', 'commercial', 'photos', 'sports'];
+  const categories = ['film', 'travel', 'commercial', 'photos'];
 
   return (
     <aside className="hidden md:flex flex-col fixed top-0 left-0 h-screen w-1/3 lg:w-1/4 bg-cinema-black border-r border-white/10 p-10 justify-between z-20">
@@ -59,20 +70,23 @@ const Sidebar = ({ onProjectSelect, onReset }) => { // <--- Added onReset prop
             {/* Categorized Project List */}
             {isWorkOpen && (
               <div className="flex flex-col gap-4 pl-4 pt-4 border-l border-white/10 ml-1">
-                {categories.map((category) => (
+                {categories.map((category) =>
                   groupedProjects[category] && (
                     <div key={category} className="space-y-1">
                       {/* Sub-Category Toggle */}
-                      <button 
-                        onClick={() => toggleCategory(category)}
+                      <button
+                        onClick={() => handleCategoryClick(category)}
                         className="flex items-center gap-2 text-[10px] font-bold text-white/40 hover:text-white/80 uppercase tracking-widest mb-1 transition-colors"
                       >
-                        {openCategories[category] ? <ChevronDown size={10} /> : <ChevronRight size={10} />}
+                        {/* Only show chevron for expandable categories */}
+                        {!HERO_GRID_CATEGORIES.includes(category) && (
+                          openCategories[category] ? <ChevronDown size={10} /> : <ChevronRight size={10} />
+                        )}
                         {category}
                       </button>
 
-                      {/* Projects in Category */}
-                      {openCategories[category] && (
+                      {/* Projects in Category - only for non-hero-grid categories */}
+                      {!HERO_GRID_CATEGORIES.includes(category) && openCategories[category] && (
                         <div className="pl-3 space-y-2 border-l border-white/5 ml-1">
                           {groupedProjects[category].map((project) => (
                             <button
@@ -87,7 +101,7 @@ const Sidebar = ({ onProjectSelect, onReset }) => { // <--- Added onReset prop
                       )}
                     </div>
                   )
-                ))}
+                )}
               </div>
             )}
           </div>

@@ -1,22 +1,23 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, X, ChevronDown, ChevronRight } from 'lucide-react';
-import { projects } from '../data'; // Import projects
+import { projects } from '../data';
 
-const MobileNav = ({ onReset, onProjectSelect }) => {
+const HERO_GRID_CATEGORIES = ['travel', 'commercial'];
+
+const MobileNav = ({ onReset, onProjectSelect, onCategorySelect }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isWorkOpen, setIsWorkOpen] = useState(true);
-  
+
   // State for sub-categories
   const [openCategories, setOpenCategories] = useState({
     film: false,
     photos: false,
-    sports: false,
     commercial: false,
-    travel: false
+    travel: false,
   });
 
-  const categories = ['film', 'travel', 'commercial', 'photos', 'sports'];
+  const categories = ['film', 'travel', 'commercial', 'photos'];
 
   // Helper to group projects
   const groupedProjects = projects.reduce((acc, project) => {
@@ -27,10 +28,19 @@ const MobileNav = ({ onReset, onProjectSelect }) => {
   }, {});
 
   const toggleCategory = (category) => {
-    setOpenCategories(prev => ({
+    setOpenCategories((prev) => ({
       ...prev,
-      [category]: !prev[category]
+      [category]: !prev[category],
     }));
+  };
+
+  const handleCategoryClick = (category) => {
+    if (HERO_GRID_CATEGORIES.includes(category)) {
+      setIsOpen(false); // Close mobile menu
+      if (onCategorySelect) onCategorySelect(category);
+    } else {
+      toggleCategory(category);
+    }
   };
 
   const handleLinkClick = () => {
@@ -83,20 +93,23 @@ const MobileNav = ({ onReset, onProjectSelect }) => {
 
                  {isWorkOpen && (
                    <div className="flex flex-col gap-4 pl-4 pt-4 border-l border-white/10 ml-1 mt-2">
-                     {categories.map((category) => (
+                     {categories.map((category) =>
                        groupedProjects[category] && (
                          <div key={category} className="space-y-2">
                            {/* Sub-Category Toggle */}
-                           <button 
-                             onClick={() => toggleCategory(category)}
+                           <button
+                             onClick={() => handleCategoryClick(category)}
                              className="flex items-center gap-2 text-sm font-bold text-white/60 uppercase tracking-widest transition-colors"
                            >
-                             {openCategories[category] ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+                             {/* Only show chevron for expandable categories */}
+                             {!HERO_GRID_CATEGORIES.includes(category) && (
+                               openCategories[category] ? <ChevronDown size={14} /> : <ChevronRight size={14} />
+                             )}
                              {category}
                            </button>
 
-                           {/* Project List */}
-                           {openCategories[category] && (
+                           {/* Project List - only for non-hero-grid categories */}
+                           {!HERO_GRID_CATEGORIES.includes(category) && openCategories[category] && (
                              <div className="pl-4 space-y-3 border-l border-white/5 ml-1">
                                {groupedProjects[category].map((project) => (
                                  <button
@@ -111,7 +124,7 @@ const MobileNav = ({ onReset, onProjectSelect }) => {
                            )}
                          </div>
                        )
-                     ))}
+                     )}
                    </div>
                  )}
                </div>

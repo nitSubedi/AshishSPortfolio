@@ -1,11 +1,77 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Play, X } from 'lucide-react';
+import { Play, X, ExternalLink } from 'lucide-react';
+import { projects } from '../data';
 
-const Hero = () => {
+const Hero = ({ heroGridCategory }) => {
   const [isPlaying, setIsPlaying] = useState(false);
-  const reelVideoPath = "/reel.mp4"; // Make sure this file is in your 'public' folder
+  const reelVideoPath = "/reel.mp4";
 
+  // Filter projects for the hero grid category
+  const heroGridProjects = heroGridCategory
+    ? projects.filter((p) => p.group === heroGridCategory)
+    : [];
+
+  // If we have a hero grid category, render the video grid
+  if (heroGridCategory && heroGridProjects.length > 0) {
+    return (
+      <section className="min-h-screen w-full bg-gray-900 px-6 py-12 md:py-20">
+        <div className="max-w-7xl mx-auto">
+          {/* Category Header */}
+          <div className="flex items-end justify-between mb-12 border-b border-white/10 pb-4">
+            <h2 className="text-3xl md:text-5xl font-bold tracking-tight uppercase">
+              {heroGridCategory}
+            </h2>
+            <span className="text-xs text-gray-500 tracking-widest uppercase">
+              {heroGridProjects.length} Videos
+            </span>
+          </div>
+
+          {/* Video Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {heroGridProjects.map((project, index) => (
+              <motion.a
+                key={project.id}
+                href={project.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: index * 0.05 }}
+                className="group cursor-pointer"
+              >
+                {/* Thumbnail */}
+                <div className="aspect-video bg-black overflow-hidden relative rounded-sm">
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  {/* Play Overlay */}
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <div className="bg-white/20 backdrop-blur-sm p-3 rounded-full border border-white/30">
+                      <ExternalLink className="text-white" size={24} />
+                    </div>
+                  </div>
+                  {/* Year Badge */}
+                  <span className="absolute top-3 left-3 text-[9px] font-bold text-emerald-400 border border-emerald-400/30 px-2 py-1 uppercase tracking-widest bg-black/60 backdrop-blur-sm rounded">
+                    {project.year}
+                  </span>
+                </div>
+
+                {/* Title */}
+                <h3 className="mt-3 text-sm font-medium text-gray-300 group-hover:text-white transition-colors line-clamp-2">
+                  {project.title}
+                </h3>
+              </motion.a>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // Default Hero
   return (
     <section className="h-[80vh] md:h-screen w-full flex flex-col justify-center items-center relative overflow-hidden bg-gray-900">
       
