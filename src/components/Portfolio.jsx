@@ -50,35 +50,25 @@ const Portfolio = ({
 
           <div className="space-y-6 text-cinema-black/80 leading-relaxed">
             <p>
-              Ashish Shrestha is a director, cinematographer, and editor based in Mississippi.
-              Originally from Nepal, his work explores themes of identity, immigration, and
-              cultural preservation through documentary filmmaking and photography.
+              Ashish Shrestha is a documentary filmmaker, cinematographer, and editor based in Oxford,
+              Mississippi. He is an MFA candidate in Documentary Expression at the University of Mississippi
+              and works with the Center for the Study of Southern Culture, filming and editing public lectures
+              and cultural programs with multi-camera setups and live-sound recording.
             </p>
 
             <p>
-              His thesis documentary, "Cotton Thread on Cotton Belt," follows a Nepali immigrant's
-              journey as she builds a threading business in the American South, challenging
-              regulatory barriers and creating positive impact in her community.
+              Before moving to the United States, Ashish spent more than five years traveling across
+              mountains and rural Nepal as a videographer and editor with Ghumante, a Nepal-based travel
+              collective. He shot and edited 45+ long-form travel documentaries centered on landscapes,
+              traditions, food, and local voices.
             </p>
 
             <p>
-              Through his travel films, Ashish has documented the remote landscapes and diverse
-              cultures of Nepal, from the base camps of the world's highest peaks to the vibrant
-              festivals of the Terai plains.
+              Ashish's films focus on people and places. He is currently completing his thesis film, Cotton
+              Thread on Cotton Belt, a documentary that follows the entrepreneurial journey of young
+              immigrant Dipa Bhattarai, who came to the U.S. as an undergraduate student and faced major
+              obstacles while building her life and business.
             </p>
-          </div>
-
-          {/* PDF Download */}
-          <div className="mt-8">
-            <a
-              href="/about-me.pdf"
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-2 text-sm text-cinema-black/60 hover:text-cinema-black transition-colors"
-            >
-              <FileText size={16} />
-              Download Full Bio (PDF)
-            </a>
           </div>
 
           <div className="mt-12 pt-8 border-t border-cinema-black/10">
@@ -111,11 +101,18 @@ const Portfolio = ({
             <h2 className="heading-serif text-3xl md:text-4xl lg:text-5xl text-cinema-black mb-2">
               {currentProject.title}
             </h2>
-            <div className="flex items-center gap-4 text-sm text-cinema-black/50">
+            <div className="flex items-center gap-4 text-sm text-cinema-black/50 mb-4">
               <span>{currentProject.category}</span>
               <span>•</span>
               <span>{currentProject.year}</span>
             </div>
+
+            {/* Description/Logline */}
+            {currentProject.description && (
+              <p className="text-cinema-black/70 leading-relaxed max-w-2xl mb-4">
+                {currentProject.description}
+              </p>
+            )}
 
             {/* PDF Link for Mr. Brown */}
             {currentProject.pdf && (
@@ -123,7 +120,7 @@ const Portfolio = ({
                 href={currentProject.pdf}
                 target="_blank"
                 rel="noreferrer"
-                className="mt-4 inline-flex items-center gap-2 text-sm text-cinema-black/60 hover:text-cinema-black transition-colors"
+                className="inline-flex items-center gap-2 text-sm text-cinema-black/60 hover:text-cinema-black transition-colors"
               >
                 <FileText size={16} />
                 View Artist Statement (PDF)

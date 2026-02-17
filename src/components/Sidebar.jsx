@@ -1,10 +1,20 @@
-import React from 'react';
-import { Instagram, Mail } from 'lucide-react';
+import { useState } from 'react';
+import { Mail, ChevronDown, ChevronRight } from 'lucide-react';
 import { projects } from '../data';
 
 const Sidebar = ({ onProjectSelect, onCategorySelect, onAboutClick, currentProject, currentCategory, showAbout }) => {
+  const [photosExpanded, setPhotosExpanded] = useState(false);
+
   const filmProjects = projects.filter(p => p.group === 'film');
   const photoProjects = projects.filter(p => p.group === 'photos');
+
+  const handlePhotosClick = () => {
+    setPhotosExpanded(!photosExpanded);
+  };
+
+  const handlePhotoProjectClick = (project) => {
+    onProjectSelect(project);
+  };
 
   return (
     <aside className="fixed left-0 top-0 h-screen w-[280px] lg:w-[320px] bg-cream p-8 lg:p-12 flex flex-col z-40 overflow-y-auto">
@@ -43,37 +53,47 @@ const Sidebar = ({ onProjectSelect, onCategorySelect, onAboutClick, currentProje
         {/* Categories */}
         <div className="mb-8 space-y-2">
           <button
-            onClick={() => onCategorySelect('travel')}
-            className={`block ${currentCategory === 'travel' ? 'text-cinema-black font-medium' : ''}`}
+            onClick={() => onCategorySelect('travel-films')}
+            className={`block ${currentCategory === 'travel-films' ? 'text-cinema-black font-medium' : ''}`}
           >
-            travel
+            travel-films
           </button>
           <button
-            onClick={() => onCategorySelect('commercial')}
-            className={`block ${currentCategory === 'commercial' ? 'text-cinema-black font-medium' : ''}`}
+            onClick={() => onCategorySelect('other')}
+            className={`block ${currentCategory === 'other' ? 'text-cinema-black font-medium' : ''}`}
           >
-            commercial
+            other
           </button>
         </div>
 
-        {/* Photos Section */}
+        {/* Photos Section - Collapsible */}
         <div className="mb-8">
-          <span className="section-title block mb-3">photos</span>
-          <div className="space-y-1">
-            {photoProjects.map((project) => (
-              <button
-                key={project.id}
-                onClick={() => onProjectSelect(project)}
-                className={`block text-left w-full ${
-                  currentProject?.id === project.id
-                    ? 'text-cinema-black font-medium'
-                    : ''
-                }`}
-              >
-                {project.title}
-              </button>
-            ))}
-          </div>
+          <button
+            onClick={handlePhotosClick}
+            className={`flex items-center gap-2 ${photosExpanded || currentProject?.group === 'photos' ? 'text-cinema-black font-medium' : ''}`}
+          >
+            {photosExpanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+            photos
+          </button>
+
+          {/* Expanded photo projects */}
+          {photosExpanded && (
+            <div className="ml-5 mt-2 space-y-1">
+              {photoProjects.map((project) => (
+                <button
+                  key={project.id}
+                  onClick={() => handlePhotoProjectClick(project)}
+                  className={`block text-left w-full text-sm ${
+                    currentProject?.id === project.id
+                      ? 'text-cinema-black font-medium'
+                      : 'text-cinema-black/60'
+                  }`}
+                >
+                  {project.title}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* About */}
@@ -96,7 +116,9 @@ const Sidebar = ({ onProjectSelect, onCategorySelect, onAboutClick, currentProje
             rel="noopener noreferrer"
             className="text-cinema-black/50 hover:text-cinema-black transition-colors"
           >
-            <Instagram size={18} />
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+            </svg>
           </a>
           <a
             href="https://vimeo.com/ashishshrestha"
