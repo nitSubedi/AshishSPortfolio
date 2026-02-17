@@ -1,19 +1,26 @@
 import React from 'react';
 import { projects } from '../data';
 import Lightbox from './Lightbox';
-import VideoModal from './VideoModal';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink, FileText } from 'lucide-react';
 
-const Portfolio = ({ currentProject, currentCategory, selectedProject, onOpenProject, onCloseProject }) => {
+const Portfolio = ({
+  currentProject,
+  currentCategory,
+  showAbout,
+  onOpenProject,
+  onImageClick,
+  selectedImage,
+  onCloseLightbox
+}) => {
 
   // Get projects for category view
   const categoryProjects = currentCategory
     ? projects.filter(p => p.group === currentCategory)
     : [];
 
-  // If showing a single project (film)
-  if (currentProject) {
+  // ABOUT VIEW
+  if (showAbout) {
     return (
       <motion.div
         initial={{ opacity: 0 }}
@@ -21,7 +28,154 @@ const Portfolio = ({ currentProject, currentCategory, selectedProject, onOpenPro
         exit={{ opacity: 0 }}
         className="min-h-screen p-6 md:p-12 lg:p-16"
       >
-        {/* Video Embed */}
+        <div className="max-w-4xl">
+          {/* Profile Image and Header */}
+          <div className="flex flex-col md:flex-row gap-8 mb-12">
+            <div className="w-48 h-48 md:w-64 md:h-64 flex-shrink-0 overflow-hidden rounded">
+              <img
+                src="/pic.JPG"
+                alt="Ashish Shrestha"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="flex flex-col justify-center">
+              <h1 className="heading-serif text-4xl md:text-5xl text-cinema-black mb-4">
+                About
+              </h1>
+              <p className="text-cinema-black/60">
+                Director, Cinematographer, Editor
+              </p>
+            </div>
+          </div>
+
+          <div className="space-y-6 text-cinema-black/80 leading-relaxed">
+            <p>
+              Ashish Shrestha is a director, cinematographer, and editor based in Mississippi.
+              Originally from Nepal, his work explores themes of identity, immigration, and
+              cultural preservation through documentary filmmaking and photography.
+            </p>
+
+            <p>
+              His thesis documentary, "Cotton Thread on Cotton Belt," follows a Nepali immigrant's
+              journey as she builds a threading business in the American South, challenging
+              regulatory barriers and creating positive impact in her community.
+            </p>
+
+            <p>
+              Through his travel films, Ashish has documented the remote landscapes and diverse
+              cultures of Nepal, from the base camps of the world's highest peaks to the vibrant
+              festivals of the Terai plains.
+            </p>
+          </div>
+
+          {/* PDF Download */}
+          <div className="mt-8">
+            <a
+              href="/about-me.pdf"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 text-sm text-cinema-black/60 hover:text-cinema-black transition-colors"
+            >
+              <FileText size={16} />
+              Download Full Bio (PDF)
+            </a>
+          </div>
+
+          <div className="mt-12 pt-8 border-t border-cinema-black/10">
+            <h3 className="text-sm tracking-wide text-cinema-black/50 mb-4">Contact</h3>
+            <a
+              href="mailto:ashish.stha5@gmail.com"
+              className="text-cinema-black hover:text-cinema-black/70 transition-colors"
+            >
+              ashish.stha5@gmail.com
+            </a>
+          </div>
+        </div>
+      </motion.div>
+    );
+  }
+
+  // SINGLE PROJECT VIEW (Films and Photos)
+  if (currentProject) {
+    // Photo Gallery Project - show images in grid
+    if (currentProject.galleryImages && currentProject.galleryImages.length > 0) {
+      return (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="min-h-screen p-6 md:p-12 lg:p-16"
+        >
+          {/* Project Header */}
+          <div className="mb-8">
+            <h2 className="heading-serif text-3xl md:text-4xl lg:text-5xl text-cinema-black mb-2">
+              {currentProject.title}
+            </h2>
+            <div className="flex items-center gap-4 text-sm text-cinema-black/50">
+              <span>{currentProject.category}</span>
+              <span>•</span>
+              <span>{currentProject.year}</span>
+            </div>
+
+            {/* PDF Link for Mr. Brown */}
+            {currentProject.pdf && (
+              <a
+                href={currentProject.pdf}
+                target="_blank"
+                rel="noreferrer"
+                className="mt-4 inline-flex items-center gap-2 text-sm text-cinema-black/60 hover:text-cinema-black transition-colors"
+              >
+                <FileText size={16} />
+                View Artist Statement (PDF)
+              </a>
+            )}
+          </div>
+
+          {/* Photo Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {currentProject.galleryImages.map((image, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: index * 0.05 }}
+                onClick={() => onImageClick(index)}
+                className="cursor-pointer group"
+              >
+                <div className="aspect-[4/3] overflow-hidden bg-cinema-gray">
+                  <img
+                    src={image}
+                    alt={`${currentProject.title} ${index + 1}`}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Lightbox */}
+          <AnimatePresence>
+            {selectedImage !== null && (
+              <Lightbox
+                images={currentProject.galleryImages}
+                initialIndex={selectedImage}
+                onClose={onCloseLightbox}
+              />
+            )}
+          </AnimatePresence>
+        </motion.div>
+      );
+    }
+
+    // Film Project - show video or coming soon
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="min-h-screen p-6 md:p-12 lg:p-16"
+      >
+        {/* Video/Image Display */}
         <div className="w-full max-w-5xl">
           {currentProject.type === 'video' ? (
             <div className="aspect-video bg-cinema-black rounded overflow-hidden shadow-lg">
@@ -31,6 +185,19 @@ const Portfolio = ({ currentProject, currentCategory, selectedProject, onOpenPro
                 className="w-full h-full object-cover"
                 poster={currentProject.image}
               />
+            </div>
+          ) : currentProject.type === 'coming-soon' ? (
+            <div className="aspect-video bg-cinema-gray rounded overflow-hidden shadow-lg relative">
+              <img
+                src={currentProject.image}
+                alt={currentProject.title}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                <span className="text-white text-sm tracking-[0.3em] uppercase">
+                  Coming Soon
+                </span>
+              </div>
             </div>
           ) : currentProject.type === 'link' ? (
             <a
@@ -50,30 +217,14 @@ const Portfolio = ({ currentProject, currentCategory, selectedProject, onOpenPro
                 </div>
               </div>
             </a>
-          ) : currentProject.galleryImages ? (
-            <div
-              onClick={() => onOpenProject(currentProject)}
-              className="aspect-video bg-cinema-black rounded overflow-hidden shadow-lg cursor-pointer relative group"
-            >
-              <img
-                src={currentProject.image}
-                alt={currentProject.title}
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                <span className="text-white text-sm tracking-widest uppercase">View Gallery</span>
-              </div>
-            </div>
           ) : null}
         </div>
 
         {/* Project Info */}
         <div className="mt-8 max-w-3xl">
-          <div className="flex items-center gap-4 mb-4">
-            <h2 className="heading-serif text-3xl md:text-4xl lg:text-5xl text-cinema-black">
-              {currentProject.title}
-            </h2>
-          </div>
+          <h2 className="heading-serif text-3xl md:text-4xl lg:text-5xl text-cinema-black mb-4">
+            {currentProject.title}
+          </h2>
 
           {currentProject.description && (
             <p className="text-cinema-black/70 leading-relaxed max-w-2xl">
@@ -87,33 +238,23 @@ const Portfolio = ({ currentProject, currentCategory, selectedProject, onOpenPro
             <span>{currentProject.year}</span>
           </div>
 
-          {currentProject.pdf && (
+          {currentProject.type === 'link' && (
             <a
-              href={currentProject.pdf}
+              href={currentProject.url}
               target="_blank"
-              rel="noreferrer"
-              className="mt-4 inline-block text-sm text-cinema-black/60 hover:text-cinema-black transition-colors underline"
+              rel="noopener noreferrer"
+              className="mt-4 inline-flex items-center gap-2 text-sm text-cinema-black hover:text-cinema-black/70 transition-colors"
             >
-              Read Artist Statement
+              <ExternalLink size={16} />
+              Watch on {currentProject.url.includes('vimeo') ? 'Vimeo' : 'YouTube'}
             </a>
           )}
         </div>
-
-        {/* Lightbox/VideoModal Overlays */}
-        <AnimatePresence>
-          {selectedProject && selectedProject.galleryImages && (
-            <Lightbox
-              images={selectedProject.galleryImages}
-              initialIndex={0}
-              onClose={onCloseProject}
-            />
-          )}
-        </AnimatePresence>
       </motion.div>
     );
   }
 
-  // Category view (travel, commercial, photos)
+  // CATEGORY VIEW (Travel, Commercial)
   if (currentCategory && categoryProjects.length > 0) {
     return (
       <motion.div
@@ -164,22 +305,11 @@ const Portfolio = ({ currentProject, currentCategory, selectedProject, onOpenPro
             </motion.div>
           ))}
         </div>
-
-        {/* Lightbox Overlay */}
-        <AnimatePresence>
-          {selectedProject && selectedProject.galleryImages && (
-            <Lightbox
-              images={selectedProject.galleryImages}
-              initialIndex={0}
-              onClose={onCloseProject}
-            />
-          )}
-        </AnimatePresence>
       </motion.div>
     );
   }
 
-  // Empty state
+  // EMPTY STATE
   return (
     <div className="min-h-screen flex items-center justify-center p-6">
       <p className="text-cinema-black/40">Select a project from the sidebar</p>

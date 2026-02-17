@@ -18,11 +18,14 @@ function AppContent() {
   // Current selected project
   const [currentProject, setCurrentProject] = useState(null);
 
-  // Current category view (travel, commercial, photos)
+  // Current category view (travel, commercial)
   const [currentCategory, setCurrentCategory] = useState(null);
 
-  // Overlay state for video/gallery
-  const [selectedProject, setSelectedProject] = useState(null);
+  // Show about section
+  const [showAbout, setShowAbout] = useState(false);
+
+  // Overlay state for lightbox
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const handleEnterSite = () => {
     setHasEntered(true);
@@ -37,26 +40,38 @@ function AppContent() {
     if (location.pathname !== '/') navigate('/');
     setCurrentProject(project);
     setCurrentCategory(null);
-    setSelectedProject(null);
+    setShowAbout(false);
+    setSelectedImage(null);
   };
 
   const handleCategorySelect = (category) => {
     if (location.pathname !== '/') navigate('/');
     setCurrentCategory(category);
     setCurrentProject(null);
-    setSelectedProject(null);
+    setShowAbout(false);
+    setSelectedImage(null);
+  };
+
+  const handleAboutClick = () => {
+    if (location.pathname !== '/') navigate('/');
+    setShowAbout(true);
+    setCurrentProject(null);
+    setCurrentCategory(null);
+    setSelectedImage(null);
   };
 
   const handleOpenProject = (project) => {
     if (project.type === 'link') {
       window.open(project.url, '_blank');
-    } else {
-      setSelectedProject(project);
     }
   };
 
-  const handleCloseProject = () => {
-    setSelectedProject(null);
+  const handleImageClick = (imageIndex) => {
+    setSelectedImage(imageIndex);
+  };
+
+  const handleCloseLightbox = () => {
+    setSelectedImage(null);
   };
 
   // Show cover page if hasn't entered yet
@@ -84,7 +99,10 @@ function AppContent() {
         <Sidebar
           onProjectSelect={handleProjectSelect}
           onCategorySelect={handleCategorySelect}
+          onAboutClick={handleAboutClick}
           currentProject={currentProject}
+          currentCategory={currentCategory}
+          showAbout={showAbout}
         />
       </div>
 
@@ -103,9 +121,11 @@ function AppContent() {
                 <Portfolio
                   currentProject={currentProject}
                   currentCategory={currentCategory}
-                  selectedProject={selectedProject}
+                  showAbout={showAbout}
                   onOpenProject={handleOpenProject}
-                  onCloseProject={handleCloseProject}
+                  onImageClick={handleImageClick}
+                  selectedImage={selectedImage}
+                  onCloseLightbox={handleCloseLightbox}
                 />
               }
             />

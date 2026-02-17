@@ -2,11 +2,12 @@ import React from 'react';
 import { Instagram, Mail } from 'lucide-react';
 import { projects } from '../data';
 
-const Sidebar = ({ onProjectSelect, onCategorySelect, currentProject }) => {
+const Sidebar = ({ onProjectSelect, onCategorySelect, onAboutClick, currentProject, currentCategory, showAbout }) => {
   const filmProjects = projects.filter(p => p.group === 'film');
+  const photoProjects = projects.filter(p => p.group === 'photos');
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-[280px] lg:w-[320px] bg-cream p-8 lg:p-12 flex flex-col z-40">
+    <aside className="fixed left-0 top-0 h-screen w-[280px] lg:w-[320px] bg-cream p-8 lg:p-12 flex flex-col z-40 overflow-y-auto">
       {/* Header */}
       <div className="mb-12">
         <h1 className="heading-serif text-4xl lg:text-5xl text-cinema-black mb-2">
@@ -39,25 +40,49 @@ const Sidebar = ({ onProjectSelect, onCategorySelect, currentProject }) => {
           </div>
         </div>
 
-        {/* Other Categories */}
-        <div className="space-y-2">
+        {/* Categories */}
+        <div className="mb-8 space-y-2">
           <button
             onClick={() => onCategorySelect('travel')}
-            className="block"
+            className={`block ${currentCategory === 'travel' ? 'text-cinema-black font-medium' : ''}`}
           >
             travel
           </button>
           <button
             onClick={() => onCategorySelect('commercial')}
-            className="block"
+            className={`block ${currentCategory === 'commercial' ? 'text-cinema-black font-medium' : ''}`}
           >
             commercial
           </button>
+        </div>
+
+        {/* Photos Section */}
+        <div className="mb-8">
+          <span className="section-title block mb-3">photos</span>
+          <div className="space-y-1">
+            {photoProjects.map((project) => (
+              <button
+                key={project.id}
+                onClick={() => onProjectSelect(project)}
+                className={`block text-left w-full ${
+                  currentProject?.id === project.id
+                    ? 'text-cinema-black font-medium'
+                    : ''
+                }`}
+              >
+                {project.title}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* About */}
+        <div className="mb-8">
           <button
-            onClick={() => onCategorySelect('photos')}
-            className="block"
+            onClick={onAboutClick}
+            className={`block ${showAbout ? 'text-cinema-black font-medium' : ''}`}
           >
-            photos
+            about
           </button>
         </div>
       </nav>
