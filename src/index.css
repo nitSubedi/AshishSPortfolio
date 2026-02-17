@@ -2,19 +2,50 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Only keep these clean basics */
 :root {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Jost', 'Helvetica Neue', Arial, sans-serif;
   line-height: 1.5;
-  font-weight: 400;
-  color-scheme: dark;
+  font-weight: 300;
+  letter-spacing: 0.04em;
 }
 
 body {
   margin: 0;
   padding: 0;
-  background-color: #0a0a0a; /* Your cinema black */
-  color: #ffffff;
-  width: 100%; /* Ensure full width */
-  overflow-x: hidden; /* Prevent accidental horizontal scrollbars */
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* Cover page (homepage) */
+.cover-page {
+  @apply h-screen w-full relative overflow-hidden bg-cinema-black text-white;
+}
+
+.dark-overlay {
+  @apply absolute inset-0 bg-black/40;
+}
+
+/* Serif heading style like Sam Ho */
+.heading-serif {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+/* Light mode for project pages */
+.light-mode {
+  @apply bg-cream text-cinema-black;
+}
+
+/* Sidebar navigation styles */
+.sidebar-nav {
+  letter-spacing: 0.15em;
+}
+
+.sidebar-nav a, .sidebar-nav button {
+  @apply block py-1 text-sm text-cinema-black/70 hover:text-cinema-black transition-colors;
+}
+
+.sidebar-nav .section-title {
+  @apply text-xs tracking-[0.2em] text-cinema-black/50 mb-2;
 }

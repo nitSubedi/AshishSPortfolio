@@ -1,150 +1,96 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Play, X, ExternalLink } from 'lucide-react';
-import { projects } from '../data';
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Instagram, Mail } from 'lucide-react';
 
-const Hero = ({ heroGridCategory }) => {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const reelVideoPath = "/reel.mp4";
-
-  // Filter projects for the hero grid category
-  const heroGridProjects = heroGridCategory
-    ? projects.filter((p) => p.group === heroGridCategory)
-    : [];
-
-  // If we have a hero grid category, render the video grid
-  if (heroGridCategory && heroGridProjects.length > 0) {
-    return (
-      <section className="min-h-screen w-full bg-gray-900 px-6 py-12 md:py-20">
-        <div className="max-w-7xl mx-auto">
-          {/* Category Header */}
-          <div className="flex items-end justify-between mb-12 border-b border-white/10 pb-4">
-            <h2 className="text-3xl md:text-5xl font-bold tracking-tight uppercase">
-              {heroGridCategory}
-            </h2>
-            <span className="text-xs text-gray-500 tracking-widest uppercase">
-              {heroGridProjects.length} Videos
-            </span>
-          </div>
-
-          {/* Video Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {heroGridProjects.map((project, index) => (
-              <motion.a
-                key={project.id}
-                href={project.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: index * 0.05 }}
-                className="group cursor-pointer"
-              >
-                {/* Thumbnail */}
-                <div className="aspect-video bg-black overflow-hidden relative rounded-sm">
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  {/* Play Overlay */}
-                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <div className="bg-white/20 backdrop-blur-sm p-3 rounded-full border border-white/30">
-                      <ExternalLink className="text-white" size={24} />
-                    </div>
-                  </div>
-                  {/* Year Badge */}
-                  <span className="absolute top-3 left-3 text-[9px] font-bold text-emerald-400 border border-emerald-400/30 px-2 py-1 uppercase tracking-widest bg-black/60 backdrop-blur-sm rounded">
-                    {project.year}
-                  </span>
-                </div>
-
-                {/* Title */}
-                <h3 className="mt-3 text-sm font-medium text-gray-300 group-hover:text-white transition-colors line-clamp-2">
-                  {project.title}
-                </h3>
-              </motion.a>
-            ))}
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  // Default Hero
+const Hero = ({ onEnterSite }) => {
   return (
-    <section className="h-[80vh] md:h-screen w-full flex flex-col justify-center items-center relative overflow-hidden bg-gray-900">
-      
-      <AnimatePresence mode="wait">
-        {!isPlaying ? (
-          // --- VIEW 1: TITLE & PLAY BUTTON ---
-          <motion.div 
-            key="content"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="absolute inset-0 flex flex-col justify-center items-center z-10"
-          >
-            {/* Background Image */}
-            <div className="absolute inset-0 opacity-40 z-0">
-               <img src="/projects/landscape/DSC08877.JPG" className="w-full h-full object-cover" alt="Background" />
-            </div>
+    <section className="cover-page">
+      {/* Background Image */}
+      <div className="absolute inset-0">
+        <motion.img
+          src="/projects/landscape/DSC08877.JPG"
+          alt=""
+          className="w-full h-full object-cover"
+          initial={{ scale: 1.05 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 1.5, ease: [0.33, 0, 0.2, 1] }}
+        />
+        <div className="dark-overlay" />
+      </div>
 
-            {/* Text Content */}
-            <div className="z-10 text-center space-y-6 px-4">
-              <motion.h1 
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 1 }}
-                className="text-4xl md:text-7xl lg:text-8xl font-bold tracking-tighter"
-              >
-                VISUAL STORYTELLING
-              </motion.h1>
-              
-              <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5, duration: 0.8 }}
-              >
-                <button 
-                  //onClick={() => setIsPlaying(true)}
-                  className="group flex items-center gap-3 mx-auto border border-white/30 px-6 py-3 rounded-full hover:bg-white hover:text-black transition-all"
-                >
-                  <div className="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Play size={12} fill="currentColor" />
-                  </div>
-                  <span className="text-xs md:text-sm tracking-widest uppercase font-medium">Play Reel</span>
-                </button>
-              </motion.div>
-            </div>
-          </motion.div>
-        ) : (
-          // --- VIEW 2: FULL SCREEN VIDEO PLAYER ---
-          <motion.div 
-            key="video"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="absolute inset-0 z-20 bg-black"
-          >
-            {/* Close Button (Top Right) */}
-            <button 
-              onClick={() => setIsPlaying(false)}
-              className="absolute top-8 right-8 z-30 text-white/50 hover:text-white transition-colors bg-black/20 backdrop-blur-sm p-2 rounded-full"
-            >
-              <X size={24} />
-            </button>
+      {/* Centered Content */}
+      <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6">
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="heading-serif text-5xl md:text-7xl lg:text-8xl text-white mb-4"
+        >
+          ashish shrestha
+        </motion.h1>
 
-            <video 
-              src={reelVideoPath} 
-              className="w-full h-full object-cover" 
-              controls 
-              autoPlay 
-              playsInline
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="text-base md:text-lg text-white/80 mb-12"
+        >
+          Director, Cinematographer, Editor
+        </motion.p>
+
+        <motion.button
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+          onClick={onEnterSite}
+          className="text-xs md:text-sm tracking-[0.3em] uppercase text-white hover:text-white/70 transition-colors"
+        >
+          Click Here
+        </motion.button>
+      </div>
+
+      {/* Bottom Social Icons */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8, delay: 0.8 }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex gap-6"
+      >
+        <a
+          href="https://www.instagram.com/theashishshrestha"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-white/60 hover:text-white transition-colors"
+        >
+          <Instagram size={20} />
+        </a>
+        <a
+          href="https://vimeo.com/ashishshrestha"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-white/60 hover:text-white transition-colors"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M23.977 6.416c-.105 2.338-1.739 5.543-4.894 9.609-3.268 4.247-6.026 6.37-8.29 6.37-1.409 0-2.578-1.294-3.553-3.881L5.322 11.4C4.603 8.816 3.834 7.522 3.01 7.522c-.179 0-.806.378-1.881 1.132L0 7.197c1.185-1.044 2.351-2.084 3.501-3.128C5.08 2.701 6.266 1.984 7.055 1.91c1.867-.18 3.016 1.1 3.447 3.838.465 2.953.789 4.789.971 5.507.539 2.45 1.131 3.674 1.776 3.674.502 0 1.256-.796 2.265-2.385 1.004-1.589 1.54-2.797 1.612-3.628.144-1.371-.395-2.061-1.614-2.061-.574 0-1.167.121-1.777.391 1.186-3.868 3.434-5.757 6.762-5.637 2.473.06 3.628 1.664 3.493 4.797l-.013.01z"/>
+          </svg>
+        </a>
+        <a
+          href="https://www.youtube.com/@theashishshrestha"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-white/60 hover:text-white transition-colors"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+          </svg>
+        </a>
+        <a
+          href="mailto:ashish.stha5@gmail.com"
+          className="text-white/60 hover:text-white transition-colors"
+        >
+          <Mail size={20} />
+        </a>
+      </motion.div>
     </section>
   );
 };

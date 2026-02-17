@@ -3,94 +3,55 @@ import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from
 import { motion, AnimatePresence } from 'framer-motion';
 
 import Sidebar from './components/Sidebar';
-import MobileNav from './components/MobileNav';
 import Hero from './components/Hero';
 import Portfolio from './components/Portfolio';
 import Contact from './components/Contact';
-
-const Home = ({ featuredProject, visibleGroup, selectedProject, onOpenProject, onCloseProject, heroGridCategory }) => (
-  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-    {/* Show Hero if no featuredProject OR if showing hero grid */}
-    {(!featuredProject || heroGridCategory) && <Hero heroGridCategory={heroGridCategory} />}
-
-    {/* Only show Portfolio if NOT in hero grid mode */}
-    {!heroGridCategory && (
-      <Portfolio
-        featuredProject={featuredProject}
-        visibleGroup={visibleGroup}
-        selectedProject={selectedProject}
-        onOpenProject={onOpenProject}
-        onCloseProject={onCloseProject}
-      />
-    )}
-    <footer className="md:hidden py-12 border-t border-white/10 text-center">
-      <p className="text-xs text-gray-600 uppercase tracking-widest">© 2026 Ashish Shrestha. All rights reserved.</p>
-    </footer>
-  </motion.div>
-);
+import { projects } from './data';
 
 function AppContent() {
   const location = useLocation();
   const navigate = useNavigate();
-  
-  // 1. Content State
-  const [featuredProject, setFeaturedProject] = useState(null);
-  const [visibleGroup, setVisibleGroup] = useState(null);
-  const [heroGridCategory, setHeroGridCategory] = useState(null);
 
-  // 2. Overlay State (Video Modal / Lightbox)
+  // Track if user has entered the site (clicked "CLICK HERE")
+  const [hasEntered, setHasEntered] = useState(false);
+
+  // Current selected project
+  const [currentProject, setCurrentProject] = useState(null);
+
+  // Current category view (travel, commercial, photos)
+  const [currentCategory, setCurrentCategory] = useState(null);
+
+  // Overlay state for video/gallery
   const [selectedProject, setSelectedProject] = useState(null);
 
-  // --- NEW: RESET HANDLER ---
-  const handleReset = () => {
-    // 1. Reset URL to home
-    if (location.pathname !== '/') navigate('/');
-
-    // 2. Clear all states to show original Hero
-    setFeaturedProject(null);
-    setVisibleGroup(null);
-    setSelectedProject(null);
-    setHeroGridCategory(null);
-
-    // 3. Scroll to top
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  // Handler for category-level clicks (Travel, Commercial)
-  const handleCategorySelect = (categoryName) => {
-    if (location.pathname !== '/') navigate('/');
-    setHeroGridCategory(categoryName);
-    setFeaturedProject(null);
-    setVisibleGroup(null);
-    setSelectedProject(null);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const handleSidebarSelection = (project) => {
-    if (location.pathname !== '/') navigate('/');
-
-    if (project.group === 'film') {
-      setFeaturedProject(project);
-      setVisibleGroup(null);
-      setSelectedProject(null);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else {
-      setVisibleGroup(project.group);
-      setFeaturedProject(null);
-      setSelectedProject(null);
-      setTimeout(() => {
-         window.scrollTo({ top: window.innerHeight * 0.8, behavior: 'smooth' });
-      }, 100);
+  const handleEnterSite = () => {
+    setHasEntered(true);
+    // Default to first film project
+    const firstFilm = projects.find(p => p.group === 'film');
+    if (firstFilm) {
+      setCurrentProject(firstFilm);
     }
   };
 
-  const handleCardClick = (project) => {
-    if (project.type === 'video') {
-      setSelectedProject(project); 
-    } else if (project.galleryImages) {
-      setSelectedProject(project); 
-    } else if (project.type === 'link') {
+  const handleProjectSelect = (project) => {
+    if (location.pathname !== '/') navigate('/');
+    setCurrentProject(project);
+    setCurrentCategory(null);
+    setSelectedProject(null);
+  };
+
+  const handleCategorySelect = (category) => {
+    if (location.pathname !== '/') navigate('/');
+    setCurrentCategory(category);
+    setCurrentProject(null);
+    setSelectedProject(null);
+  };
+
+  const handleOpenProject = (project) => {
+    if (project.type === 'link') {
       window.open(project.url, '_blank');
+    } else {
+      setSelectedProject(project);
     }
   };
 
@@ -98,34 +59,53 @@ function AppContent() {
     setSelectedProject(null);
   };
 
+  // Show cover page if hasn't entered yet
+  if (!hasEntered && location.pathname === '/') {
+    return (
+      <AnimatePresence mode="wait">
+        <motion.div
+          key="hero"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <Hero onEnterSite={handleEnterSite} />
+        </motion.div>
+      </AnimatePresence>
+    );
+  }
+
+  // Main layout with sidebar
   return (
-    <div className="bg-cinema-black min-h-screen text-white font-sans selection:bg-white selection:text-black">
-      {/* PASS THE RESET PROP HERE */}
-      <Sidebar
-        onProjectSelect={handleSidebarSelection}
-        onCategorySelect={handleCategorySelect}
-        onReset={handleReset}
-      />
+    <div className="min-h-screen bg-cream">
+      {/* Sidebar - hidden on mobile */}
+      <div className="hidden md:block">
+        <Sidebar
+          onProjectSelect={handleProjectSelect}
+          onCategorySelect={handleCategorySelect}
+          currentProject={currentProject}
+        />
+      </div>
 
-      <MobileNav
-        onReset={handleReset}
-        onProjectSelect={handleSidebarSelection}
-        onCategorySelect={handleCategorySelect}
-      />
+      {/* Mobile Header */}
+      <header className="md:hidden fixed top-0 left-0 w-full bg-cream z-40 p-4 border-b border-cinema-black/10">
+        <h1 className="heading-serif text-2xl text-cinema-black">ashish shrestha</h1>
+      </header>
 
-      <main className="md:ml-[33.33%] lg:ml-[25%] relative w-full md:w-2/3 lg:w-3/4">
+      {/* Main Content */}
+      <main className="md:ml-[280px] lg:ml-[320px] min-h-screen pt-16 md:pt-0">
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
             <Route
               path="/"
               element={
-                <Home
-                  featuredProject={featuredProject}
-                  visibleGroup={visibleGroup}
+                <Portfolio
+                  currentProject={currentProject}
+                  currentCategory={currentCategory}
                   selectedProject={selectedProject}
-                  onOpenProject={handleCardClick}
+                  onOpenProject={handleOpenProject}
                   onCloseProject={handleCloseProject}
-                  heroGridCategory={heroGridCategory}
                 />
               }
             />

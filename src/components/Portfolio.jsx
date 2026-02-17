@@ -1,93 +1,189 @@
 import React from 'react';
 import { projects } from '../data';
-import ProjectCard from './ProjectCard';
 import Lightbox from './Lightbox';
 import VideoModal from './VideoModal';
 import { AnimatePresence, motion } from 'framer-motion';
+import { ExternalLink } from 'lucide-react';
 
-const Portfolio = ({ featuredProject, visibleGroup, selectedProject, onOpenProject, onCloseProject }) => {
-  
-  const filteredProjects = visibleGroup 
-    ? projects.filter(p => p.group === visibleGroup)
+const Portfolio = ({ currentProject, currentCategory, selectedProject, onOpenProject, onCloseProject }) => {
+
+  // Get projects for category view
+  const categoryProjects = currentCategory
+    ? projects.filter(p => p.group === currentCategory)
     : [];
 
-  return (
-    <section className="relative z-20">
-      
-      {/* MODE 1: SINGLE FEATURED PROJECT (For Films) */}
-      {featuredProject && (
-        <div className="min-h-screen flex items-center px-6 py-20 max-w-7xl mx-auto">
-           <motion.div 
-             initial={{ opacity: 0 }} 
-             animate={{ opacity: 1 }} 
-             className="w-full"
-           >
-             <div className="flex items-end justify-between mb-16 border-b border-white/10 pb-4">
-               <h2 className="text-sm text-gray-500 tracking-widest uppercase">
-                 Featured Project
-               </h2>
-               <button 
-                 onClick={() => onOpenProject(featuredProject)}
-                 className="text-xs text-emerald-400 hover:text-white transition-colors uppercase tracking-widest"
-               >
-                 Play Now
-               </button>
-             </div>
-
-             {/* Render Card in 'Featured' Layout */}
-             <ProjectCard 
-               project={featuredProject} 
-               layout="featured" // <--- Triggers Side-by-Side view
-               onClick={onOpenProject} 
-             />
-           </motion.div>
+  // If showing a single project (film)
+  if (currentProject) {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="min-h-screen p-6 md:p-12 lg:p-16"
+      >
+        {/* Video Embed */}
+        <div className="w-full max-w-5xl">
+          {currentProject.type === 'video' ? (
+            <div className="aspect-video bg-cinema-black rounded overflow-hidden shadow-lg">
+              <video
+                src={currentProject.videoSrc}
+                controls
+                className="w-full h-full object-cover"
+                poster={currentProject.image}
+              />
+            </div>
+          ) : currentProject.type === 'link' ? (
+            <a
+              href={currentProject.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block aspect-video bg-cinema-black rounded overflow-hidden shadow-lg relative group"
+            >
+              <img
+                src={currentProject.image}
+                alt={currentProject.title}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <div className="bg-white/20 backdrop-blur-sm p-4 rounded-full">
+                  <ExternalLink className="text-white" size={32} />
+                </div>
+              </div>
+            </a>
+          ) : currentProject.galleryImages ? (
+            <div
+              onClick={() => onOpenProject(currentProject)}
+              className="aspect-video bg-cinema-black rounded overflow-hidden shadow-lg cursor-pointer relative group"
+            >
+              <img
+                src={currentProject.image}
+                alt={currentProject.title}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <span className="text-white text-sm tracking-widest uppercase">View Gallery</span>
+              </div>
+            </div>
+          ) : null}
         </div>
-      )}
 
-      {/* MODE 2: GRID VIEW (For Photos/Sports) */}
-      {visibleGroup && filteredProjects.length > 0 && (
-        <div className="px-6 py-20 max-w-7xl mx-auto min-h-screen bg-cinema-black">
-          <div className="flex items-end justify-between mb-16 border-b border-white/10 pb-4">
-            <h2 className="text-sm text-gray-500 tracking-widest uppercase">
-              {visibleGroup} Collection
+        {/* Project Info */}
+        <div className="mt-8 max-w-3xl">
+          <div className="flex items-center gap-4 mb-4">
+            <h2 className="heading-serif text-3xl md:text-4xl lg:text-5xl text-cinema-black">
+              {currentProject.title}
             </h2>
-            <span className="text-xs text-gray-600">Selected Works</span>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-20">
-            {filteredProjects.map((project, index) => (
-              <ProjectCard 
-                key={project.id} 
-                project={project} 
-                index={index} 
-                layout="grid" // <--- Triggers Stacked view
-                onClick={onOpenProject} 
-              />
-            ))}
-          </div>
-        </div>
-      )}
 
-      {/* OVERLAYS */}
-      <AnimatePresence>
-        {selectedProject && (
-          <>
-            {(selectedProject.galleryImages && selectedProject.galleryImages.length > 0) ? (
-              <Lightbox 
-                images={selectedProject.galleryImages} 
-                initialIndex={0} 
-                onClose={onCloseProject} 
-              />
-            ) : selectedProject.type === 'video' ? (
-              <VideoModal 
-                videoSrc={selectedProject.videoSrc}
-                onClose={onCloseProject}
-              />
-            ) : null}
-          </>
-        )}
-      </AnimatePresence>
-    </section>
+          {currentProject.description && (
+            <p className="text-cinema-black/70 leading-relaxed max-w-2xl">
+              {currentProject.description}
+            </p>
+          )}
+
+          <div className="mt-6 flex items-center gap-4 text-sm text-cinema-black/50">
+            <span>{currentProject.category}</span>
+            <span>•</span>
+            <span>{currentProject.year}</span>
+          </div>
+
+          {currentProject.pdf && (
+            <a
+              href={currentProject.pdf}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-4 inline-block text-sm text-cinema-black/60 hover:text-cinema-black transition-colors underline"
+            >
+              Read Artist Statement
+            </a>
+          )}
+        </div>
+
+        {/* Lightbox/VideoModal Overlays */}
+        <AnimatePresence>
+          {selectedProject && selectedProject.galleryImages && (
+            <Lightbox
+              images={selectedProject.galleryImages}
+              initialIndex={0}
+              onClose={onCloseProject}
+            />
+          )}
+        </AnimatePresence>
+      </motion.div>
+    );
+  }
+
+  // Category view (travel, commercial, photos)
+  if (currentCategory && categoryProjects.length > 0) {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="min-h-screen p-6 md:p-12 lg:p-16"
+      >
+        {/* Header */}
+        <div className="mb-12">
+          <h1 className="heading-serif text-4xl md:text-5xl text-cinema-black capitalize">
+            {currentCategory}
+          </h1>
+          <p className="mt-2 text-sm text-cinema-black/50">
+            {categoryProjects.length} {categoryProjects.length === 1 ? 'project' : 'projects'}
+          </p>
+        </div>
+
+        {/* Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {categoryProjects.map((project, index) => (
+            <motion.div
+              key={project.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: index * 0.05 }}
+              onClick={() => onOpenProject(project)}
+              className="group cursor-pointer"
+            >
+              <div className="aspect-video bg-cinema-gray rounded overflow-hidden relative">
+                <img
+                  src={project.image}
+                  alt={project.title}
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+                {project.type === 'link' && (
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <ExternalLink className="text-white" size={24} />
+                  </div>
+                )}
+              </div>
+              <div className="mt-3">
+                <h3 className="text-sm font-medium text-cinema-black group-hover:text-cinema-black/70 transition-colors line-clamp-2">
+                  {project.title}
+                </h3>
+                <span className="text-xs text-cinema-black/40">{project.year}</span>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Lightbox Overlay */}
+        <AnimatePresence>
+          {selectedProject && selectedProject.galleryImages && (
+            <Lightbox
+              images={selectedProject.galleryImages}
+              initialIndex={0}
+              onClose={onCloseProject}
+            />
+          )}
+        </AnimatePresence>
+      </motion.div>
+    );
+  }
+
+  // Empty state
+  return (
+    <div className="min-h-screen flex items-center justify-center p-6">
+      <p className="text-cinema-black/40">Select a project from the sidebar</p>
+    </div>
   );
 };
 
