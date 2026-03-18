@@ -100,6 +100,11 @@ const Portfolio = ({
           <div className="mb-8">
             <h2 className="heading-serif text-3xl md:text-4xl lg:text-5xl text-cinema-black mb-2">
               {currentProject.title}
+              {currentProject.subtitle && (
+                <span className="block text-lg md:text-xl lg:text-2xl text-cinema-black/50 font-normal mt-1">
+                  {currentProject.subtitle}
+                </span>
+              )}
             </h2>
             <div className="flex items-center gap-4 text-sm text-cinema-black/50 mb-4">
               <span>{currentProject.category}</span>
@@ -221,6 +226,11 @@ const Portfolio = ({
         <div className="mt-8 max-w-3xl">
           <h2 className="heading-serif text-3xl md:text-4xl lg:text-5xl text-cinema-black mb-4">
             {currentProject.title}
+            {currentProject.subtitle && (
+              <span className="block text-lg md:text-xl lg:text-2xl text-cinema-black/50 font-normal mt-1">
+                {currentProject.subtitle}
+              </span>
+            )}
           </h2>
 
           {currentProject.description && (

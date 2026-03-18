@@ -2,7 +2,8 @@ export const projects = [
   // --- EXISTING PROJECTS ---
   {
     id: 1,
-    title: "Threading The American Dream -(Work in Progress)",
+    title: "Threading The American Dream",
+    subtitle: "Work in Progress",
     category: "Thesis Documentary",
     group: "film",
     year: "2026",
