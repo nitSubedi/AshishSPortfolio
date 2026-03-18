@@ -50,24 +50,30 @@ const Portfolio = ({
 
           <div className="space-y-6 text-cinema-black/80 leading-relaxed">
             <p>
-              Ashish Shrestha is a documentary filmmaker, cinematographer, and editor based in Oxford,
-              Mississippi. He is an MFA candidate in Documentary Expression at the University of Mississippi
-              and works with the Center for the Study of Southern Culture, filming and editing public lectures
-              and cultural programs with multi-camera setups and live-sound recording.
+              Ashish Shrestha is a documentary filmmaker and cinematographer based in Oxford, Mississippi,
+              originally from Nepal. His work centers on observational, visually driven films about people
+              and places that are underrepresented. Through his films, he aims to create a positive impact
+              on society by bringing overlooked stories to light.
             </p>
 
             <p>
-              Before moving to the United States, Ashish spent more than five years traveling across
-              mountains and rural Nepal as a videographer and editor with Ghumante, a Nepal-based travel
-              collective. He shot and edited 45+ long-form travel documentaries centered on landscapes,
-              traditions, food, and local voices.
+              He is currently completing his MFA in Documentary Expression at the University of Mississippi.
+              Currently he is working on his thesis film, Cotton Thread, which follows Nepali immigrant
+              entrepreneur Dipa Bhattarai and her legal fight that changed Mississippi state law.
             </p>
 
             <p>
-              Ashish's films focus on people and places. He is currently completing his thesis film, Cotton
-              Thread on Cotton Belt, a documentary that follows the entrepreneurial journey of young
-              immigrant Dipa Bhattarai, who came to the U.S. as an undergraduate student and faced major
-              obstacles while building her life and business.
+              His short film "Jere Allen" — A Lifetime of Passion and Resilience, Painted on Canvas — is an
+              intimate portrait of a lifelong painter. The film was selected for the South Georgia Film
+              Festival, Oxford Film Festival, Redfish Film Festival, Rising Tide Film Festival, and Jackson
+              Doc Fest.
+            </p>
+
+            <p>
+              Before graduate school, Ashish worked as a cinematographer and editor in Nepal, producing more
+              than 45 travel documentaries for digital platforms named "Ghumante". His work reflects his
+              experience as a Nepali immigrant in the American South and his commitment to telling grounded,
+              human stories with clarity and care.
             </p>
           </div>
 
