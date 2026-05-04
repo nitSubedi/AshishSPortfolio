@@ -3,6 +3,7 @@ import { projects } from '../data';
 import Lightbox from './Lightbox';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ExternalLink, FileText } from 'lucide-react';
+import { thumbUrl, fullUrl } from '../imageUtils';
 
 const Portfolio = ({
   currentProject,
@@ -152,9 +153,10 @@ const Portfolio = ({
               >
                 <div className="aspect-[4/3] overflow-hidden bg-cinema-gray">
                   <img
-                    src={image}
+                    src={thumbUrl(image)}
                     alt={`${currentProject.title} ${index + 1}`}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    loading="lazy"
                   />
                 </div>
               </motion.div>
@@ -191,13 +193,13 @@ const Portfolio = ({
                 src={currentProject.videoSrc}
                 controls
                 className="w-full h-full object-cover"
-                poster={currentProject.image}
+                poster={fullUrl(currentProject.image)}
               />
             </div>
           ) : currentProject.type === 'coming-soon' ? (
             <div className="aspect-video bg-cinema-gray rounded overflow-hidden shadow-lg relative">
               <img
-                src={currentProject.image}
+                src={fullUrl(currentProject.image)}
                 alt={currentProject.title}
                 className="w-full h-full object-cover"
               />
@@ -215,7 +217,7 @@ const Portfolio = ({
               className="block aspect-video bg-cinema-black rounded overflow-hidden shadow-lg relative group"
             >
               <img
-                src={currentProject.image}
+                src={fullUrl(currentProject.image)}
                 alt={currentProject.title}
                 className="w-full h-full object-cover"
               />
@@ -299,9 +301,10 @@ const Portfolio = ({
             >
               <div className="aspect-video bg-cinema-gray rounded overflow-hidden relative">
                 <img
-                  src={project.image}
+                  src={thumbUrl(project.image)}
                   alt={project.title}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  loading="lazy"
                 />
                 {project.type === 'link' && (
                   <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">

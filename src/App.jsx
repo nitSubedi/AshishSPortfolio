@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronRight } from 'lucide-react';
 
 import Sidebar from './components/Sidebar';
 import Hero from './components/Hero';
@@ -27,6 +28,9 @@ function AppContent() {
   // Overlay state for lightbox
   const [selectedImage, setSelectedImage] = useState(null);
 
+  // Mobile sidebar open/close
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   const handleEnterSite = () => {
     setHasEntered(true);
     // Default to first film project
@@ -36,12 +40,25 @@ function AppContent() {
     }
   };
 
+  const handleTitleClick = () => {
+    if (location.pathname !== '/') navigate('/');
+    const firstFilm = projects.find(p => p.group === 'film');
+    if (firstFilm) {
+      setCurrentProject(firstFilm);
+    }
+    setCurrentCategory(null);
+    setShowAbout(false);
+    setSelectedImage(null);
+    setMobileMenuOpen(false);
+  };
+
   const handleProjectSelect = (project) => {
     if (location.pathname !== '/') navigate('/');
     setCurrentProject(project);
     setCurrentCategory(null);
     setShowAbout(false);
     setSelectedImage(null);
+    setMobileMenuOpen(false);
   };
 
   const handleCategorySelect = (category) => {
@@ -50,6 +67,7 @@ function AppContent() {
     setCurrentProject(null);
     setShowAbout(false);
     setSelectedImage(null);
+    setMobileMenuOpen(false);
   };
 
   const handleAboutClick = () => {
@@ -58,6 +76,7 @@ function AppContent() {
     setCurrentProject(null);
     setCurrentCategory(null);
     setSelectedImage(null);
+    setMobileMenuOpen(false);
   };
 
   const handleOpenProject = (project) => {
@@ -94,25 +113,67 @@ function AppContent() {
   // Main layout with sidebar
   return (
     <div className="min-h-screen bg-cream">
-      {/* Sidebar - hidden on mobile */}
+      {/* Desktop Sidebar */}
       <div className="hidden md:block">
         <Sidebar
           onProjectSelect={handleProjectSelect}
           onCategorySelect={handleCategorySelect}
           onAboutClick={handleAboutClick}
+          onTitleClick={handleTitleClick}
           currentProject={currentProject}
           currentCategory={currentCategory}
           showAbout={showAbout}
         />
       </div>
 
-      {/* Mobile Header */}
-      <header className="md:hidden fixed top-0 left-0 w-full bg-cream z-40 p-4 border-b border-cinema-black/10">
-        <h1 className="heading-serif text-2xl text-cinema-black">ashish shrestha</h1>
-      </header>
+      {/* Mobile Sidebar Overlay */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="md:hidden fixed inset-0 bg-black/30 z-40"
+              onClick={() => setMobileMenuOpen(false)}
+            />
+            {/* Drawer */}
+            <motion.div
+              initial={{ x: '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              transition={{ type: 'tween', duration: 0.3, ease: [0.33, 0, 0.2, 1] }}
+              className="md:hidden fixed left-0 top-0 h-screen w-[280px] z-50"
+            >
+              <Sidebar
+                onProjectSelect={handleProjectSelect}
+                onCategorySelect={handleCategorySelect}
+                onAboutClick={handleAboutClick}
+                onTitleClick={handleTitleClick}
+                currentProject={currentProject}
+                currentCategory={currentCategory}
+                showAbout={showAbout}
+              />
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
+      {/* Mobile Semi-Circle Trigger */}
+      {!mobileMenuOpen && (
+        <button
+          onClick={() => setMobileMenuOpen(true)}
+          className="md:hidden fixed left-0 top-1/2 -translate-y-1/2 z-40 w-6 h-12 bg-cinema-black/80 rounded-r-full flex items-center justify-center active:bg-cinema-black transition-colors"
+          aria-label="Open menu"
+        >
+          <ChevronRight size={16} className="text-white ml-[-2px]" />
+        </button>
+      )}
 
       {/* Main Content */}
-      <main className="md:ml-[280px] lg:ml-[320px] min-h-screen pt-16 md:pt-0">
+      <main className="md:ml-[280px] lg:ml-[320px] min-h-screen">
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
             <Route

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Mail, ChevronDown, ChevronRight } from 'lucide-react';
 import { projects } from '../data';
 
-const Sidebar = ({ onProjectSelect, onCategorySelect, onAboutClick, currentProject, currentCategory, showAbout }) => {
+const Sidebar = ({ onProjectSelect, onCategorySelect, onAboutClick, onTitleClick, currentProject, currentCategory, showAbout }) => {
   const [photosExpanded, setPhotosExpanded] = useState(false);
 
   const filmProjects = projects.filter(p => p.group === 'film');
@@ -20,9 +20,11 @@ const Sidebar = ({ onProjectSelect, onCategorySelect, onAboutClick, currentProje
     <aside className="fixed left-0 top-0 h-screen w-[280px] lg:w-[320px] bg-cream p-8 lg:p-12 flex flex-col z-40 overflow-y-auto">
       {/* Header */}
       <div className="mb-12">
-        <h1 className="heading-serif text-4xl lg:text-5xl text-cinema-black mb-2">
-          ashish shrestha
-        </h1>
+        <button onClick={onTitleClick} className="text-left">
+          <h1 className="heading-serif text-4xl lg:text-5xl text-cinema-black mb-2 hover:text-cinema-black/70 transition-colors">
+            ashish shrestha
+          </h1>
+        </button>
         <p className="text-sm tracking-wide text-cinema-black/60">
           Director, Cinematographer, Editor
         </p>
