@@ -76,17 +76,6 @@ export const projects = [
     image: "/projects/jere-allen/cover.png",
     description: "Jere Allen, an 80-year-old painter in Oxford, Mississippi, as he uses his grandmother's lessons to create beautiful oil Paintings. This film highlights his journey and passion, focusing on his beloved hummingbird series"
   },
-  {
-    id: 5,
-    title: "South Trail",
-    category: "Short Film",
-    group: "film",
-    year: '2023',
-    type: "link",
-    url: "https://vimeo.com/1157759347?share=copy&fl=sv&fe=ci",
-    image: "/projects/south-trail/cover.jpg", 
-    description:"A film about the South Trail, starting with the beauty of the jungle in the fall season. The perception of Wonder Walks, Mountain Bikers, and Runners about the South Trail. And end in the Winter season." 
-  },
   //{
   //  id: 6,
   //  title: "Interschool Basketball",
