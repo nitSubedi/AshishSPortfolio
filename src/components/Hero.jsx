@@ -5,18 +5,8 @@ import { Instagram, Mail } from 'lucide-react';
 const Hero = ({ onEnterSite }) => {
   return (
     <section className="cover-page">
-      {/* Background Image */}
-      <div className="absolute inset-0">
-        <motion.img
-          src="/projects/landscape/DSC08877.JPG"
-          alt=""
-          className="w-full h-full object-cover"
-          initial={{ scale: 1.05 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 1.5, ease: [0.33, 0, 0.2, 1] }}
-        />
-        <div className="dark-overlay" />
-      </div>
+      {/* Background */}
+      <div className="absolute inset-0 bg-black" />
 
       {/* Centered Content */}
       <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6">

@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
 
 import Sidebar from './components/Sidebar';
-import Hero from './components/Hero';
 import Portfolio from './components/Portfolio';
 import Contact from './components/Contact';
 import { projects } from './data';
@@ -13,11 +12,10 @@ function AppContent() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Track if user has entered the site (clicked "CLICK HERE")
-  const [hasEntered, setHasEntered] = useState(false);
+  const firstFilm = projects.find(p => p.group === 'film');
 
   // Current selected project
-  const [currentProject, setCurrentProject] = useState(null);
+  const [currentProject, setCurrentProject] = useState(firstFilm || null);
 
   // Current category view (travel, commercial)
   const [currentCategory, setCurrentCategory] = useState(null);
@@ -30,15 +28,6 @@ function AppContent() {
 
   // Mobile sidebar open/close
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  const handleEnterSite = () => {
-    setHasEntered(true);
-    // Default to first film project
-    const firstFilm = projects.find(p => p.group === 'film');
-    if (firstFilm) {
-      setCurrentProject(firstFilm);
-    }
-  };
 
   const handleTitleClick = () => {
     if (location.pathname !== '/') navigate('/');
@@ -92,23 +81,6 @@ function AppContent() {
   const handleCloseLightbox = () => {
     setSelectedImage(null);
   };
-
-  // Show cover page if hasn't entered yet
-  if (!hasEntered && location.pathname === '/') {
-    return (
-      <AnimatePresence mode="wait">
-        <motion.div
-          key="hero"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <Hero onEnterSite={handleEnterSite} />
-        </motion.div>
-      </AnimatePresence>
-    );
-  }
 
   // Main layout with sidebar
   return (
