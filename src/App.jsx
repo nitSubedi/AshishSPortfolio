@@ -493,7 +493,7 @@ function AboutSection() {
           <div className="contact-card">
             <a
               className="resume-btn"
-              href="/about-me.pdf"
+              href="/resume.pdf"
               download="Ashish-Shrestha-Resume.pdf"
             >
               <span className="resume-btn-arrow" aria-hidden="true">↓</span>
