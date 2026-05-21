@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
-import VideoModal from './components/VideoModal';
 
 /* ─── Film data ──────────────────────────────────────────── */
 const FILMS = [
@@ -10,10 +8,11 @@ const FILMS = [
     year: '2026',
     status: 'Work in Progress',
     role: 'Director · Cinematographer · Editor',
-    image: null,
-    videoSrc: '/projects/cotton-thread/Teaser 2.mp4',
+    image: '/media/threading-american-dream.jpg',
+    vimeoId: '1194505499',
+    vimeoHash: 'e3cea82ba4',
     synopsis:
-      'Dipa Bhattarai, a Nepali student in Mississippi, threads eyebrows for friends in a dorm room — then turns the skill into a kiosk, a second shop, and a fight with the State Board of Cosmetology that ends up changing state law.',
+      'Threading the American Dream is a 26-minute character-driven documentary with a social message. The film follows the story of Dipa Bhattarai, a Nepali immigrant who came to the American South as an international student to pursue her undergraduate degree. Built a threading business from almost nothing, was shut down by the state cosmetology board, and fought back through a federal lawsuit that ultimately changed Mississippi law.',
     featured: true,
   },
   {
@@ -21,16 +20,16 @@ const FILMS = [
     title: 'Griot of the South',
     year: '',
     role: '',
-    image: null,
+    image: '/projects/griot/cover.png',
     vimeoId: '1194469987',
     vimeoHash: 'd1d67f7679',
   },
   {
     id: 'jere',
     title: 'Jere Allen',
-    year: '2024',
+    year: '',
     role: '',
-    image: null,
+    image: '/projects/jere-allen/cover.png',
     vimeoId: '941591505',
     vimeoHash: '1f181bebaa',
   },
@@ -114,50 +113,25 @@ function TopBar({ section, setSection }) {
   );
 }
 
-/* ─── Vimeo Modal ────────────────────────────────────────── */
-function VimeoModal({ vimeoId, vimeoHash, title, onClose }) {
-  useEffect(() => {
-    const handleKey = (e) => { if (e.key === 'Escape') onClose(); };
-    window.addEventListener('keydown', handleKey);
-    return () => window.removeEventListener('keydown', handleKey);
-  }, [onClose]);
-
-  const src = `https://player.vimeo.com/video/${vimeoId}?${vimeoHash ? `h=${vimeoHash}&` : ''}badge=0&autopause=0&player_id=0&app_id=58479`;
-
+/* ─── Inline Vimeo player ────────────────────────────────── */
+function VimeoPlayer({ vimeoId, vimeoHash, title }) {
+  const src = `https://player.vimeo.com/video/${vimeoId}?${vimeoHash ? `h=${vimeoHash}&` : ''}autoplay=1&badge=0&autopause=0&player_id=0&app_id=58479`;
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl flex items-center justify-center p-4"
-      onClick={onClose}
-    >
-      <button onClick={onClose} className="absolute top-6 right-6 text-white/50 hover:text-white transition-colors z-[110]" style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 32, lineHeight: 1 }}>✕</button>
-      <motion.div
-        initial={{ scale: 0.95, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.95, opacity: 0 }}
-        style={{ width: '100%', maxWidth: 1024, position: 'relative', paddingTop: '56.25%' }}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <iframe
-          src={src}
-          frameBorder="0"
-          allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-          referrerPolicy="strict-origin-when-cross-origin"
-          allowFullScreen
-          title={title}
-          style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
-        />
-      </motion.div>
-    </motion.div>
+    <iframe
+      src={src}
+      frameBorder="0"
+      allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+      referrerPolicy="strict-origin-when-cross-origin"
+      allowFullScreen
+      title={title}
+      style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
+    />
   );
 }
 
 /* ─── Films section ──────────────────────────────────────── */
 function FilmsSection() {
-  const [videoOpen, setVideoOpen] = useState(false);
-  const [vimeoFilm, setVimeoFilm] = useState(null);
+  const [featuredPlaying, setFeaturedPlaying] = useState(false);
   const featured = FILMS.find(f => f.featured);
   const rest = FILMS.filter(f => !f.featured);
 
@@ -169,11 +143,20 @@ function FilmsSection() {
 
       {/* Featured */}
       <article className="featured">
-        <div className="media" onClick={() => setVideoOpen(true)} style={{ cursor: 'pointer' }}>
-          <span className="play-pill">
-            <span className="dot" />
-            Watch · Teaser
-          </span>
+        <div
+          className="media"
+          onClick={!featuredPlaying ? () => setFeaturedPlaying(true) : undefined}
+          style={{ cursor: featuredPlaying ? 'default' : 'pointer' }}
+        >
+          {featuredPlaying ? (
+            <VimeoPlayer vimeoId={featured.vimeoId} vimeoHash={featured.vimeoHash} title={featured.title} />
+          ) : (
+            <>
+              {featured.image && (
+                <img src={featured.image} alt={featured.title} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+              )}
+            </>
+          )}
         </div>
         <div className="body">
           <h3>{featured.title}</h3>
@@ -181,44 +164,42 @@ function FilmsSection() {
         </div>
       </article>
 
-      <AnimatePresence>
-        {videoOpen && (
-          <VideoModal videoSrc={featured.videoSrc} onClose={() => setVideoOpen(false)} />
-        )}
-        {vimeoFilm && (
-          <VimeoModal
-            vimeoId={vimeoFilm.vimeoId}
-            vimeoHash={vimeoFilm.vimeoHash}
-            title={vimeoFilm.title}
-            onClose={() => setVimeoFilm(null)}
-          />
-        )}
-      </AnimatePresence>
-
       {rest.length > 0 && (
-        <div className="grid" style={{ marginTop: 80 }}>
-          {rest.map(film => <FilmCard key={film.id} film={film} onVimeoOpen={() => setVimeoFilm(film)} />)}
-        </div>
+        <>
+          <div className="films-divider" />
+          <div className="grid" style={{ marginTop: 60 }}>
+            {rest.map(film => <FilmCard key={film.id} film={film} />)}
+          </div>
+        </>
       )}
     </section>
   );
 }
 
-function FilmCard({ film, onVimeoOpen }) {
+function FilmCard({ film }) {
+  const [playing, setPlaying] = useState(false);
   const handleClick = () => {
-    if (film.vimeoId) onVimeoOpen();
+    if (film.vimeoId) setPlaying(true);
     else if (film.url) window.open(film.url, '_blank', 'noopener,noreferrer');
   };
   return (
-    <div className="card" onClick={handleClick} style={(film.vimeoId || film.url) ? { cursor: 'pointer' } : {}}>
+    <div className="card" onClick={!playing ? handleClick : undefined} style={(!playing && (film.vimeoId || film.url)) ? { cursor: 'pointer' } : {}}>
       <div className="media">
-        <div className="media-placeholder" />
+        {playing ? (
+          <VimeoPlayer vimeoId={film.vimeoId} vimeoHash={film.vimeoHash} title={film.title} />
+        ) : film.image ? (
+          <img src={film.image} alt={film.title} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+        ) : (
+          <div className="media-placeholder" />
+        )}
       </div>
       <div className="info">
-        <h4 className="title">{film.title}</h4>
-        {film.year && <span className="year">{film.year}</span>}
+        <div className="info-row">
+          <h4 className="title">{film.title}</h4>
+          {film.year && <span className="year">{film.year}</span>}
+        </div>
+        {film.role && <p className="role">{film.role}</p>}
       </div>
-      {film.role && <p className="role">{film.role}</p>}
     </div>
   );
 }
@@ -465,7 +446,6 @@ function Footer() {
         <a href="https://www.instagram.com/theashishshrestha" target="_blank" rel="noopener noreferrer">Instagram</a>
         <a href="https://vimeo.com/ashishshrestha" target="_blank" rel="noopener noreferrer">Vimeo</a>
         <a href="https://www.youtube.com/@theashishshrestha" target="_blank" rel="noopener noreferrer">YouTube</a>
-        <a href="mailto:ashish.stha5@gmail.com">Email</a>
       </div>
     </footer>
   );
