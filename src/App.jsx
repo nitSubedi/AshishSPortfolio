@@ -205,12 +205,38 @@ function FilmCard({ film }) {
 }
 
 /* ─── Travel section ─────────────────────────────────────── */
+function formatViews(n) {
+  if (n >= 1_000_000) return (n / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M views';
+  if (n >= 1_000) return (n / 1_000).toFixed(1).replace(/\.0$/, '') + 'K views';
+  return n + ' views';
+}
+
 function TravelSection() {
+  const [views, setViews] = useState({});
+
+  useEffect(() => {
+    const key = import.meta.env.VITE_YOUTUBE_API_KEY;
+    if (!key) return;
+    const ids = TRAVEL.map(t => t.yt).join(',');
+    fetch(`https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${ids}&key=${key}`)
+      .then(r => r.json())
+      .then(data => {
+        const map = {};
+        data.items?.forEach(item => {
+          map[item.id] = parseInt(item.statistics.viewCount, 10);
+        });
+        setViews(map);
+      })
+      .catch(() => {});
+  }, []);
+
   return (
     <section className="tab-panel" data-screen-label="Travel">
       <div className="section-head">
         <h2>Travel Documentaries</h2>
       </div>
+
+      <p className="travel-intro">All of these films were made for Ghumante, a Nepali travel content creator where I worked as cinematographer and editor from 2017 to 2023. Over six years, I shot and edited 45+ films across Nepal — from week-long to month-long treks in the Himalayas. I was part of the team when it grew from 10,000 to 250,000 subscribers. I worked on a small crew, planning and handling the camera in the field and editing at my desk. The films blend observational documentary with landscape.</p>
 
       <div className="grid grid-3">
         {TRAVEL.map((t, i) => (
@@ -238,6 +264,7 @@ function TravelSection() {
               <span className="year">{t.year}</span>
             </div>
             <p className="role">{t.subtitle ? `${t.subtitle} — ${t.loc}` : t.loc}</p>
+            {views[t.yt] && <span className="view-count">{formatViews(views[t.yt])}</span>}
           </a>
         ))}
       </div>
