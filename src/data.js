@@ -84,6 +84,7 @@ export const projects = [
     year: "2024",
     type: "vimeo-embed",
     vimeoId: "941591505",
+    vimeoHash: "1f181bebaa",
     image: "/projects/jere-allen/cover.png",
     description: "Jere Allen, an 80-year-old painter in Oxford, Mississippi, as he uses his grandmother's lessons to create beautiful oil Paintings. This film highlights his journey and passion, focusing on his beloved hummingbird series"
   },
