@@ -66,6 +66,17 @@ export const projects = [
     ]
   },
   {
+    id: 5,
+    title: "Griot of the South",
+    category: "Documentary",
+    group: "film",
+    year: "2025",
+    type: "vimeo-embed",
+    vimeoId: "1194469987",
+    vimeoHash: "d1d67f7679",
+    description: ""
+  },
+  {
     id: 4,
     title: "Jere Allen",
     category: "Short Film",

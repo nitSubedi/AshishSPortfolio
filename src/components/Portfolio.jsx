@@ -187,7 +187,18 @@ const Portfolio = ({
       >
         {/* Video/Image Display */}
         <div className="w-full max-w-5xl">
-          {currentProject.type === 'video' ? (
+          {currentProject.type === 'vimeo-embed' ? (
+            <div style={{ padding: '56.25% 0 0 0', position: 'relative' }} className="rounded overflow-hidden shadow-lg">
+              <iframe
+                src={`https://player.vimeo.com/video/${currentProject.vimeoId}?h=${currentProject.vimeoHash}&badge=0&autopause=0&player_id=0&app_id=58479`}
+                frameBorder="0"
+                allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+                title={currentProject.title}
+              />
+            </div>
+          ) : currentProject.type === 'video' ? (
             <div className="aspect-video bg-cinema-black rounded overflow-hidden shadow-lg">
               <video
                 src={currentProject.videoSrc}
