@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { FaLinkedin, FaVimeoV, FaInstagram } from 'react-icons/fa';
 
 /* ─── Film data ──────────────────────────────────────────── */
 const FILMS = [
@@ -463,34 +464,29 @@ function AboutSection() {
         </div>
         <div className="about-body">
           <p className="lede">
-            Director, Cinematographer, Editor — working between Mississippi and Nepal.
+            Director, Cinematographer, Editor, Photographer.
           </p>
           <p>
-            Ashish Shrestha is a documentary filmmaker and cinematographer based
-            in Oxford, Mississippi, originally from Nepal. His work centers on
-            observational, visually driven films about people and places that
-            are underrepresented. Through his films, he aims to create a
-            positive impact on society by bringing overlooked stories to light.
+            Ashish Shrestha is a documentary filmmaker and cinematographer from Nepal, currently based in Oxford,
+            Mississippi, where he is pursuing his MFA in Documentary Expression at the University of Mississippi.
+            His work is shaped by culture and experience. Drawn to ordinary people carrying extraordinary truth
+            in places the world rarely looks. His work explores belonging, resilience, and the stories that live
+            quietly in place.
           </p>
           <p>
-            He is currently completing his MFA in Documentary Expression at the
-            University of Mississippi. He is working on his thesis film,{' '}
-            <em>Threading The American Dream</em>, which follows Nepali immigrant
-            entrepreneur Dipa Bhattarai and her legal fight that changed
-            Mississippi state law.
+            Currently finishing his thesis film <em>Threading the American Dream</em>, which follows Nepali
+            immigrant entrepreneur Dipa Bhattarai and her legal fight that changed Mississippi state law. A
+            project that won the first prize at the Riverrun International Film Festival student documentary pitch.
           </p>
           <p>
-            His short film <em>Jere Allen — A Lifetime of Passion and Resilience,
-            Painted on Canvas</em> is an intimate portrait of a lifelong painter.
-            The film was selected for the South Georgia Film Festival, Oxford Film
-            Festival, Redfish Film Festival, Rising Tide Film Festival, and Jackson
-            Doc Fest.
+            His short film <em>Jere Allen — A Lifetime of Passion and Resilience, Painted on Canvas</em>, an
+            intimate portrait of a lifelong painter. The film was selected for the South Georgia Film Festival,
+            Oxford Film Festival, Redfish Film Festival, Rising Tide Film Festival, and Jackson Doc Fest.
           </p>
           <p>
-            Before graduate school, Ashish worked as a cinematographer and editor
-            in Nepal, producing more than 45 travel documentaries for digital
-            platforms named <em>Ghumante</em>. His work reflects his experience as
-            a Nepali immigrant in the American South and his commitment to telling
+            Before graduate school, Ashish worked as a cinematographer and editor in Nepal, producing more than
+            45 travel documentaries for digital platforms named <em>Ghumante</em>. His work reflects his
+            experience as a Nepali international student in the American South and his commitment to telling
             grounded, human stories with clarity and care.
           </p>
 
@@ -502,7 +498,7 @@ function AboutSection() {
             >
               <span className="resume-btn-arrow" aria-hidden="true">↓</span>
               <span className="resume-btn-label">
-                <span className="resume-btn-main">Download résumé</span>
+                <span className="resume-btn-main">Résumé</span>
                 <span className="resume-btn-sub">PDF</span>
               </span>
             </a>
@@ -511,9 +507,9 @@ function AboutSection() {
               ashish.stha5@gmail.com
             </a>
             <div className="links">
-              <a href="https://www.instagram.com/theashishshrestha" target="_blank" rel="noopener noreferrer">Instagram</a>
-              <a href="https://vimeo.com/ashishshrestha" target="_blank" rel="noopener noreferrer">Vimeo</a>
-              <a href="https://www.youtube.com/@theashishshrestha" target="_blank" rel="noopener noreferrer">YouTube</a>
+              <a href="https://www.instagram.com/ashish.5tha/" target="_blank" rel="noopener noreferrer" title="Instagram" aria-label="Instagram"><FaInstagram size={20} /></a>
+              <a href="https://vimeo.com/ashishshrestha" target="_blank" rel="noopener noreferrer" title="Vimeo" aria-label="Vimeo"><FaVimeoV size={20} /></a>
+              <a href="https://www.linkedin.com/in/ashish5tha" target="_blank" rel="noopener noreferrer" title="LinkedIn" aria-label="LinkedIn"><FaLinkedin size={20} /></a>
             </div>
           </div>
         </div>
@@ -528,9 +524,9 @@ function Footer() {
     <footer className="footer">
       <div>© 2026 Ashish Shrestha — All work, all rights reserved.</div>
       <div className="socials">
-        <a href="https://www.instagram.com/theashishshrestha" target="_blank" rel="noopener noreferrer">Instagram</a>
-        <a href="https://vimeo.com/ashishshrestha" target="_blank" rel="noopener noreferrer">Vimeo</a>
-        <a href="https://www.youtube.com/@theashishshrestha" target="_blank" rel="noopener noreferrer">YouTube</a>
+        <a href="https://www.instagram.com/ashish.5tha/" target="_blank" rel="noopener noreferrer" title="Instagram" aria-label="Instagram"><FaInstagram size={15} /></a>
+        <a href="https://vimeo.com/ashishshrestha" target="_blank" rel="noopener noreferrer" title="Vimeo" aria-label="Vimeo"><FaVimeoV size={15} /></a>
+        <a href="https://www.linkedin.com/in/ashish5tha" target="_blank" rel="noopener noreferrer" title="LinkedIn" aria-label="LinkedIn"><FaLinkedin size={15} /></a>
       </div>
     </footer>
   );
