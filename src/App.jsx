@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
-import Lightbox from './components/Lightbox';
 import VideoModal from './components/VideoModal';
 
 /* ─── Film data ──────────────────────────────────────────── */
@@ -11,7 +10,7 @@ const FILMS = [
     year: '2026',
     status: 'Work in Progress',
     role: 'Director · Cinematographer · Editor',
-    image: '/media/threading-american-dream.jpg',
+    image: null,
     videoSrc: '/projects/cotton-thread/Teaser 2.mp4',
     synopsis:
       'Dipa Bhattarai, a Nepali student in Mississippi, threads eyebrows for friends in a dorm room — then turns the skill into a kiosk, a second shop, and a fight with the State Board of Cosmetology that ends up changing state law.',
@@ -29,7 +28,7 @@ const FILMS = [
     title: 'Jere Allen',
     year: '2024',
     role: '',
-    image: '/projects/jere-allen/cover.png',
+    image: null,
     url: 'https://vimeo.com/941591505?fl=pl&fe=sh',
   },
 ];
@@ -61,14 +60,8 @@ const PHOTO_SETS = [
     subtitle: 'Portrait series',
     years: '2025',
     layout: 'editorial',
-    cover: '/projects/mr-brown/photos/cover.jpg',
-    images: [
-      '/projects/mr-brown/Photo in sequence/1.jpg',
-      '/projects/mr-brown/Photo in sequence/2.jpg',
-      '/projects/mr-brown/Photo in sequence/3.jpg',
-      '/projects/mr-brown/Photo in sequence/4.jpg',
-      '/projects/mr-brown/Photo in sequence/5.jpg',
-    ],
+    cover: null,
+    images: [],
     caption: {
       lede: 'A year with Earnest Brown.',
       body: 'Mr. Brown is a retired barber in north Oxford, Mississippi. I photographed him in his shop, his garden, and the front porch of the house he has lived in since 1971 — a slow portrait of a man who has spent fifty years watching the same block change around him.',
@@ -80,15 +73,8 @@ const PHOTO_SETS = [
     subtitle: 'Nepal · Mississippi',
     years: '2020–2025',
     layout: 'wide',
-    cover: '/projects/landscape/DSC06773.jpg',
-    images: [
-      '/projects/landscape/DSC00029.jpg',
-      '/projects/landscape/DSC05091.JPG',
-      '/projects/landscape/DSC06863.jpg',
-      '/projects/landscape/DSC06993.jpg',
-      '/projects/landscape/DSC08772.JPG',
-      '/projects/landscape/DSC08877.JPG',
-    ],
+    cover: null,
+    images: [],
     caption: {
       lede: 'Two places, one camera.',
       body: 'Pictures made between trekking shoots in Nepal and quiet driving weeks across the Mississippi Delta. The frames are wide on purpose — most are made just before or after the main film of the day, when the light has gone soft and the work is technically over.',
@@ -140,11 +126,6 @@ function FilmsSection() {
       {/* Featured */}
       <article className="featured">
         <div className="media" onClick={() => setVideoOpen(true)} style={{ cursor: 'pointer' }}>
-          <img
-            src={featured.image}
-            alt={featured.title}
-            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', transition: 'transform 700ms cubic-bezier(.2,.7,.2,1)' }}
-          />
           <span className="play-pill">
             <span className="dot" />
             Watch · Teaser
@@ -178,9 +159,7 @@ function FilmCard({ film }) {
   return (
     <div className="card" onClick={handleClick} style={film.url ? { cursor: 'pointer' } : {}}>
       <div className="media">
-        {film.image
-          ? <img src={film.image} alt={film.title} loading="lazy" />
-          : <div className="media-placeholder" />}
+        <div className="media-placeholder" />
       </div>
       <div className="info">
         <h4 className="title">{film.title}</h4>
@@ -210,15 +189,7 @@ function TravelSection() {
             style={{ textDecoration: 'none' }}
           >
             <div className="media">
-              <img
-                src={`https://img.youtube.com/vi/${t.yt}/maxresdefault.jpg`}
-                alt={`${t.name} — thumbnail`}
-                loading="lazy"
-                onError={e => { e.currentTarget.src = `https://img.youtube.com/vi/${t.yt}/hqdefault.jpg`; }}
-              />
-              <span className="play-pill">
-                <span className="dot" /> Watch
-              </span>
+              <div className="media-placeholder" />
             </div>
             <div className="info">
               <h4 className="title">{t.name}</h4>
@@ -235,7 +206,6 @@ function TravelSection() {
 /* ─── Photography section ────────────────────────────────── */
 function PhotographySection() {
   const [openSet, setOpenSet] = useState(null);
-  const [lightboxIndex, setLightboxIndex] = useState(null);
 
   if (openSet) {
     const set = PHOTO_SETS.find(s => s.id === openSet);
@@ -255,22 +225,8 @@ function PhotographySection() {
           <p className="folder-caption-body">{set.caption.body}</p>
         </div>
 
-        <PhotoLayout
-          layout={set.layout}
-          images={set.images}
-          title={set.title}
-          onImageClick={i => setLightboxIndex(i)}
-        />
+        <PhotoLayout layout={set.layout} images={set.images} title={set.title} />
 
-        <AnimatePresence>
-          {lightboxIndex !== null && (
-            <Lightbox
-              images={set.images}
-              initialIndex={lightboxIndex}
-              onClose={() => setLightboxIndex(null)}
-            />
-          )}
-        </AnimatePresence>
       </section>
     );
   }
@@ -293,9 +249,7 @@ function PhotographySection() {
           >
             <div className="folder-tab" aria-hidden="true" />
             <div className="folder-cover">
-              {set.cover
-                ? <img src={set.cover} alt={`${set.title} cover`} />
-                : <div style={{ width: '100%', height: '100%', background: 'var(--bg-2)' }} />}
+              <div style={{ width: '100%', height: '100%', background: 'var(--bg-2)' }} />
               <span className="folder-count">{set.images.length} images</span>
             </div>
             <div className="folder-meta">
@@ -313,16 +267,18 @@ function PhotographySection() {
   );
 }
 
-function PhotoLayout({ layout, images, title, onImageClick }) {
+function PhotoLayout({ layout, images, title }) {
+  const Placeholder = () => (
+    <div style={{ width: '100%', height: '100%', background: 'var(--bg-2)' }} />
+  );
   const Img = ({ i }) => {
-    if (!images[i]) return null;
+    if (!images[i]) return <Placeholder />;
     return (
       <img
         src={images[i]}
         alt={`${title} ${i + 1}`}
         loading="lazy"
-        onClick={() => onImageClick(i)}
-        style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', cursor: 'pointer', transition: 'transform 600ms cubic-bezier(.2,.7,.2,1)' }}
+        style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
       />
     );
   };
@@ -375,9 +331,7 @@ function AboutSection() {
         <span className="count">Currently — Oxford, Mississippi</span>
       </div>
       <div className="about">
-        <div className="portrait">
-          <img src="/pic.JPG" alt="Ashish Shrestha" />
-        </div>
+        <div className="portrait" />
         <div className="about-body">
           <p className="lede">
             Director, Cinematographer, Editor — working between Mississippi and Nepal.
