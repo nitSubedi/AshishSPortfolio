@@ -8,10 +8,10 @@ const FILMS = [
   {
     id: 'threading',
     title: 'Threading The American Dream',
-    year: '2024',
+    year: '2026',
     status: 'Work in Progress',
     role: 'Director · Cinematographer · Editor',
-    image: '/projects/cotton-thread/stills/preview.jpg',
+    image: '/media/threading-american-dream.jpg',
     videoSrc: '/projects/cotton-thread/Teaser 2.mp4',
     synopsis:
       'Dipa Bhattarai, a Nepali student in Mississippi, threads eyebrows for friends in a dorm room — then turns the skill into a kiosk, a second shop, and a fight with the State Board of Cosmetology that ends up changing state law.',
@@ -21,30 +21,36 @@ const FILMS = [
     id: 'griot',
     title: 'Griot of the South',
     year: '',
-    role: 'Director',
+    role: '',
     image: null,
-    synopsis: 'Short description of the film — replace this copy with your own.',
   },
   {
     id: 'jere',
     title: 'Jere Allen',
     year: '2024',
-    role: 'Director',
+    role: '',
     image: '/projects/jere-allen/cover.png',
     url: 'https://vimeo.com/941591505?fl=pl&fe=sh',
-    synopsis:
-      'A quiet portrait of the Oxford-based painter at work in his studio — a meditation on craft, repetition, and the slow accumulation of a life in paint.',
   },
 ];
 
-/* ─── Travel data ────────────────────────────────────────── */
+/* ─── Travel data — all 15 films ────────────────────────── */
 const TRAVEL = [
-  { name: 'KORI', subtitle: 'The Beautiful Highlands of Kaski', year: '2020', url: 'https://youtu.be/WnGWfHJQb5U', image: 'https://img.youtube.com/vi/WnGWfHJQb5U/maxresdefault.jpg' },
-  { name: 'Chola Circuit & Everest Base Camp', subtitle: 'Ep Two', year: '2021', url: 'https://youtu.be/LolExdWgPDU', image: 'https://img.youtube.com/vi/LolExdWgPDU/maxresdefault.jpg' },
-  { name: 'Badimalika & Tribeni Patan', subtitle: '', year: '2021', url: 'https://youtu.be/9iXhMmPtqRE', image: 'https://img.youtube.com/vi/9iXhMmPtqRE/maxresdefault.jpg' },
-  { name: 'Khumai Dada', subtitle: 'Great Machhapuchhre Trail', year: '2022', url: 'https://youtu.be/C0xkXjMK8Jk', image: 'https://img.youtube.com/vi/C0xkXjMK8Jk/maxresdefault.jpg' },
-  { name: 'Ramaroshan', subtitle: 'Episode I', year: '2021', url: 'https://youtu.be/VTq6NA18xeM', image: 'https://img.youtube.com/vi/VTq6NA18xeM/maxresdefault.jpg' },
-  { name: 'People & Culture of Madhesh Pradesh', subtitle: '', year: '2022', url: 'https://youtu.be/SBEkfMAD6VM', image: 'https://img.youtube.com/vi/SBEkfMAD6VM/maxresdefault.jpg' },
+  { name: 'KORI', subtitle: 'The Beautiful Highlands of Kaski', loc: 'Kaski, Nepal', year: '2020', yt: 'WnGWfHJQb5U' },
+  { name: 'Chola Circuit & Everest Base Camp', subtitle: 'Ep. Two — Kalapathar & EBC', loc: 'Khumbu, Nepal', year: '2021', yt: 'LolExdWgPDU' },
+  { name: 'Badimalika & Tribeni Patan', subtitle: 'Pilgrimage via Kalikot', loc: 'Bajura, Nepal', year: '2021', yt: '9iXhMmPtqRE' },
+  { name: 'Khumai Dada', subtitle: 'Great Machhapuchhre Trail', loc: 'Kaski, Nepal', year: '2022', yt: 'C0xkXjMK8Jk' },
+  { name: 'Ramaroshan', subtitle: 'Episode I — 12 Lakes, 18 Meadows', loc: 'Achham, Nepal', year: '2021', yt: 'VTq6NA18xeM' },
+  { name: 'People & Culture of Madhesh Pradesh', subtitle: 'Imagine Nepal', loc: 'Madhesh, Nepal', year: '2022', yt: 'SBEkfMAD6VM' },
+  { name: 'Saipal Base Camp — Road Trip', subtitle: 'Episode 1', loc: 'Bajhang, Nepal', year: '2022', yt: 'uGTjK0m_NQY' },
+  { name: 'Saipal Base Camp — The Trek', subtitle: 'Episode 2', loc: 'Bajhang, Nepal', year: '2022', yt: 'jid2_wtB7kQ' },
+  { name: 'Raidhungi & Saipal Finale', subtitle: 'Bajhang series finale', loc: 'Bajhang, Nepal', year: '2023', yt: 'c0u_ppZVsLk' },
+  { name: 'Holi in Janakpur', subtitle: 'Festival of colors', loc: 'Janakpur, Nepal', year: '2024', yt: 'pqHYiqfaqNI' },
+  { name: 'Kanchanjunga Base Camp', subtitle: 'Ep. 1 — Oktang', loc: 'Taplejung, Nepal', year: '2020', yt: 'BBa0F1kzToI' },
+  { name: 'Kanchanjunga Base Camp', subtitle: 'Ep. 2 — Pangpema North', loc: 'Taplejung, Nepal', year: '2020', yt: '6itDcVxx-s4' },
+  { name: 'Meme Pokhari', subtitle: 'Lockdown Series', loc: 'Lamjung, Nepal', year: '2020', yt: 'ELgO9sT7uW0' },
+  { name: 'Gokyo', subtitle: 'Chola Circuit Ep. 3 — Chola Pass & Gokyo Ri', loc: 'Khumbu, Nepal', year: '2020', yt: 'zIMONZdb188' },
+  { name: 'NESO', subtitle: 'The dying festival of the Kanchanjungas', loc: 'Ghunsa, Taplejung', year: '2020', yt: 'ozvsYlEz-Lg' },
 ];
 
 /* ─── Photo sets ─────────────────────────────────────────── */
@@ -126,17 +132,19 @@ function FilmsSection() {
   const rest = FILMS.filter(f => !f.featured);
 
   return (
-    <section className="tab-panel">
+    <section className="tab-panel" data-screen-label="Films">
       <div className="section-head">
         <h2>Films</h2>
       </div>
 
       {/* Featured */}
       <article className="featured">
-        <div className="media" onClick={() => setVideoOpen(true)}>
-          {featured.image
-            ? <img src={featured.image} alt={featured.title} />
-            : <div style={{ width: '100%', height: '100%', background: 'var(--bg-2)' }} />}
+        <div className="media" onClick={() => setVideoOpen(true)} style={{ cursor: 'pointer' }}>
+          <img
+            src={featured.image}
+            alt={featured.title}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', transition: 'transform 700ms cubic-bezier(.2,.7,.2,1)' }}
+          />
           <span className="play-pill">
             <span className="dot" />
             Watch · Teaser
@@ -148,19 +156,15 @@ function FilmsSection() {
         </div>
       </article>
 
-      {/* Video modal */}
       <AnimatePresence>
         {videoOpen && (
           <VideoModal videoSrc={featured.videoSrc} onClose={() => setVideoOpen(false)} />
         )}
       </AnimatePresence>
 
-      {/* Other films */}
       {rest.length > 0 && (
         <div className="grid" style={{ marginTop: 80 }}>
-          {rest.map(film => (
-            <FilmCard key={film.id} film={film} />
-          ))}
+          {rest.map(film => <FilmCard key={film.id} film={film} />)}
         </div>
       )}
     </section>
@@ -190,30 +194,9 @@ function FilmCard({ film }) {
 /* ─── Travel section ─────────────────────────────────────── */
 function TravelSection() {
   return (
-    <section className="tab-panel">
+    <section className="tab-panel" data-screen-label="Travel">
       <div className="section-head">
         <h2>Travel Documentaries</h2>
-        <span className="count">{TRAVEL.length} films · 2020–2022</span>
-      </div>
-
-      <div className="intro">
-        <div>
-          <span className="intro-label">On Travel — Nepal</span>
-          <p className="intro-lede">Long-form journeys through the trails and valleys of Nepal.</p>
-        </div>
-        <div className="intro-body">
-          <p>
-            Most of these are made for <em>Ghumante</em>, a long-running travel
-            series I shoot and edit across the Himalayas — from week-long treks
-            in Khumbu and Manaslu to remote villages in Bajura, Mugu, and Dolpa.
-          </p>
-          <p className="muted">
-            I work on small, mobile crews — often just myself and a guide.
-            Camera, drone, sound, edit, and color are all mine. The films blend
-            observational documentary with landscape: long takes, weather, time
-            of day, and the lives of the people who live there.
-          </p>
-        </div>
       </div>
 
       <div className="grid grid-3">
@@ -221,19 +204,27 @@ function TravelSection() {
           <a
             className="card"
             key={i}
-            href={t.url}
+            href={`https://youtu.be/${t.yt}`}
             target="_blank"
             rel="noopener noreferrer"
             style={{ textDecoration: 'none' }}
           >
             <div className="media">
-              <img src={t.image} alt={t.name} loading="lazy" />
+              <img
+                src={`https://img.youtube.com/vi/${t.yt}/maxresdefault.jpg`}
+                alt={`${t.name} — thumbnail`}
+                loading="lazy"
+                onError={e => { e.currentTarget.src = `https://img.youtube.com/vi/${t.yt}/hqdefault.jpg`; }}
+              />
+              <span className="play-pill">
+                <span className="dot" /> Watch
+              </span>
             </div>
             <div className="info">
               <h4 className="title">{t.name}</h4>
               <span className="year">{t.year}</span>
             </div>
-            {t.subtitle && <p className="role">{t.subtitle}</p>}
+            <p className="role">{t.subtitle ? `${t.subtitle} — ${t.loc}` : t.loc}</p>
           </a>
         ))}
       </div>
@@ -249,16 +240,14 @@ function PhotographySection() {
   if (openSet) {
     const set = PHOTO_SETS.find(s => s.id === openSet);
     return (
-      <section className="tab-panel">
+      <section className="tab-panel" data-screen-label="Photography">
         <div className="section-head">
           <div className="folder-breadcrumb">
             <button className="back-link" onClick={() => setOpenSet(null)}>
               ← Photography
             </button>
             <h2>{set.title}</h2>
-            <span className="folder-sub" style={{ color: 'var(--ink-2)', fontSize: 13 }}>{set.subtitle}</span>
           </div>
-          <span className="count">{set.years} · {set.images.length} images</span>
         </div>
 
         <div className="folder-caption">
@@ -287,7 +276,7 @@ function PhotographySection() {
   }
 
   return (
-    <section className="tab-panel">
+    <section className="tab-panel" data-screen-label="Photography">
       <div className="section-head">
         <h2>Photography</h2>
         <span className="count">{PHOTO_SETS.length} series</span>
@@ -325,16 +314,15 @@ function PhotographySection() {
 }
 
 function PhotoLayout({ layout, images, title, onImageClick }) {
-  const Img = ({ i, className }) => {
+  const Img = ({ i }) => {
     if (!images[i]) return null;
     return (
       <img
         src={images[i]}
         alt={`${title} ${i + 1}`}
-        className={className}
         loading="lazy"
         onClick={() => onImageClick(i)}
-        style={{ display: 'block' }}
+        style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', cursor: 'pointer', transition: 'transform 600ms cubic-bezier(.2,.7,.2,1)' }}
       />
     );
   };
@@ -381,7 +369,7 @@ function PhotoLayout({ layout, images, title, onImageClick }) {
 /* ─── About section ──────────────────────────────────────── */
 function AboutSection() {
   return (
-    <section className="tab-panel">
+    <section className="tab-panel" data-screen-label="About">
       <div className="section-head">
         <h2>About</h2>
         <span className="count">Currently — Oxford, Mississippi</span>
@@ -470,7 +458,6 @@ function Footer() {
 export default function App() {
   const [section, setSection] = useState('films');
 
-  // Persist tab in URL hash
   useEffect(() => {
     const fromHash = (window.location.hash || '').replace('#', '');
     if (['films', 'travel', 'photography', 'about'].includes(fromHash)) {
