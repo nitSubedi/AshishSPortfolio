@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import VideoModal from './components/VideoModal';
 
 /* ─── Film data ──────────────────────────────────────────── */
@@ -22,6 +22,8 @@ const FILMS = [
     year: '',
     role: '',
     image: null,
+    vimeoId: '1194469987',
+    vimeoHash: 'd1d67f7679',
   },
   {
     id: 'jere',
@@ -29,7 +31,8 @@ const FILMS = [
     year: '2024',
     role: '',
     image: null,
-    url: 'https://vimeo.com/941591505?fl=pl&fe=sh',
+    vimeoId: '941591505',
+    vimeoHash: '1f181bebaa',
   },
 ];
 
@@ -111,9 +114,50 @@ function TopBar({ section, setSection }) {
   );
 }
 
+/* ─── Vimeo Modal ────────────────────────────────────────── */
+function VimeoModal({ vimeoId, vimeoHash, title, onClose }) {
+  useEffect(() => {
+    const handleKey = (e) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [onClose]);
+
+  const src = `https://player.vimeo.com/video/${vimeoId}?${vimeoHash ? `h=${vimeoHash}&` : ''}badge=0&autopause=0&player_id=0&app_id=58479`;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl flex items-center justify-center p-4"
+      onClick={onClose}
+    >
+      <button onClick={onClose} className="absolute top-6 right-6 text-white/50 hover:text-white transition-colors z-[110]" style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 32, lineHeight: 1 }}>✕</button>
+      <motion.div
+        initial={{ scale: 0.95, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.95, opacity: 0 }}
+        style={{ width: '100%', maxWidth: 1024, position: 'relative', paddingTop: '56.25%' }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <iframe
+          src={src}
+          frameBorder="0"
+          allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+          referrerPolicy="strict-origin-when-cross-origin"
+          allowFullScreen
+          title={title}
+          style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+        />
+      </motion.div>
+    </motion.div>
+  );
+}
+
 /* ─── Films section ──────────────────────────────────────── */
 function FilmsSection() {
   const [videoOpen, setVideoOpen] = useState(false);
+  const [vimeoFilm, setVimeoFilm] = useState(null);
   const featured = FILMS.find(f => f.featured);
   const rest = FILMS.filter(f => !f.featured);
 
@@ -141,23 +185,32 @@ function FilmsSection() {
         {videoOpen && (
           <VideoModal videoSrc={featured.videoSrc} onClose={() => setVideoOpen(false)} />
         )}
+        {vimeoFilm && (
+          <VimeoModal
+            vimeoId={vimeoFilm.vimeoId}
+            vimeoHash={vimeoFilm.vimeoHash}
+            title={vimeoFilm.title}
+            onClose={() => setVimeoFilm(null)}
+          />
+        )}
       </AnimatePresence>
 
       {rest.length > 0 && (
         <div className="grid" style={{ marginTop: 80 }}>
-          {rest.map(film => <FilmCard key={film.id} film={film} />)}
+          {rest.map(film => <FilmCard key={film.id} film={film} onVimeoOpen={() => setVimeoFilm(film)} />)}
         </div>
       )}
     </section>
   );
 }
 
-function FilmCard({ film }) {
+function FilmCard({ film, onVimeoOpen }) {
   const handleClick = () => {
-    if (film.url) window.open(film.url, '_blank', 'noopener,noreferrer');
+    if (film.vimeoId) onVimeoOpen();
+    else if (film.url) window.open(film.url, '_blank', 'noopener,noreferrer');
   };
   return (
-    <div className="card" onClick={handleClick} style={film.url ? { cursor: 'pointer' } : {}}>
+    <div className="card" onClick={handleClick} style={(film.vimeoId || film.url) ? { cursor: 'pointer' } : {}}>
       <div className="media">
         <div className="media-placeholder" />
       </div>
