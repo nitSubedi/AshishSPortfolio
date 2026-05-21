@@ -189,7 +189,15 @@ function TravelSection() {
             style={{ textDecoration: 'none' }}
           >
             <div className="media">
-              <div className="media-placeholder" />
+              <img
+                src={`https://img.youtube.com/vi/${t.yt}/maxresdefault.jpg`}
+                alt={`${t.name} — thumbnail`}
+                loading="lazy"
+                onError={e => { e.currentTarget.src = `https://img.youtube.com/vi/${t.yt}/hqdefault.jpg`; }}
+              />
+              <span className="play-pill">
+                <span className="dot" /> Watch
+              </span>
             </div>
             <div className="info">
               <h4 className="title">{t.name}</h4>
