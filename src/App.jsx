@@ -339,7 +339,9 @@ function AboutSection() {
         <span className="count">Currently — Oxford, Mississippi</span>
       </div>
       <div className="about">
-        <div className="portrait" />
+        <div className="portrait">
+          <img src="/about-portrait.jpg" alt="Ashish Shrestha" />
+        </div>
         <div className="about-body">
           <p className="lede">
             Director, Cinematographer, Editor — working between Mississippi and Nepal.
