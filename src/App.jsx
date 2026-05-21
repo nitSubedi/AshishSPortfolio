@@ -59,14 +59,24 @@ const PHOTO_SETS = [
   {
     id: 'mr-brown',
     title: 'Mr. Brown',
-    subtitle: 'Portrait series',
+    subtitle: 'Journey from Farm to Market',
     years: '2025',
-    layout: 'editorial',
+    layout: 'essay',
     cover: null,
-    images: [],
+    images: [
+      '/projects/mr-brown/web/1 Large.jpeg',
+      '/projects/mr-brown/web/2 Large.jpeg',
+      '/projects/mr-brown/web/3 Large.jpeg',
+      '/projects/mr-brown/web/4 Large.jpeg',
+      '/projects/mr-brown/web/5 Large.jpeg',
+      '/projects/mr-brown/web/DSC02528 Large.jpeg',
+      '/projects/mr-brown/web/DSC02645 Large.jpeg',
+      '/projects/mr-brown/web/DSC02651 Large.jpeg',
+      '/projects/mr-brown/web/DSC02767 Large.jpeg',
+    ],
     caption: {
-      lede: 'A year with Earnest Brown.',
-      body: 'Mr. Brown is a retired barber in north Oxford, Mississippi. I photographed him in his shop, his garden, and the front porch of the house he has lived in since 1971 — a slow portrait of a man who has spent fifty years watching the same block change around him.',
+      lede: 'From farm to market.',
+      body: 'Mr. Brown is a local farmer in Water Valley, Mississippi, who has been farming for 43 years following the footsteps of his parents. He grows vegetables, fruits, herbs, and raises livestock — and brings everything to the Oxford community market. This project follows his journey from the land to the people he sells to.',
     },
   },
   {
@@ -282,9 +292,6 @@ function PhotographySection() {
       <section className="tab-panel" data-screen-label="Photography">
         <div className="section-head">
           <div className="folder-breadcrumb">
-            <button className="back-link" onClick={() => setOpenSet(null)}>
-              ← Photography
-            </button>
             <h2>{set.title}</h2>
           </div>
         </div>
@@ -336,7 +343,36 @@ function PhotographySection() {
   );
 }
 
+function PhotoLightbox({ images, index, onClose, onPrev, onNext }) {
+  useEffect(() => {
+    const handler = (e) => {
+      if (e.key === 'Escape') onClose();
+      if (e.key === 'ArrowRight') onNext();
+      if (e.key === 'ArrowLeft') onPrev();
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [onClose, onNext, onPrev]);
+
+  return (
+    <div className="lightbox-overlay" onClick={onClose}>
+      <button className="lightbox-close" onClick={onClose}>✕</button>
+      <button className="lightbox-prev" onClick={e => { e.stopPropagation(); onPrev(); }}>‹</button>
+      <img
+        src={images[index]}
+        alt={`Photo ${index + 1}`}
+        className="lightbox-img"
+        onClick={e => e.stopPropagation()}
+      />
+      <button className="lightbox-next" onClick={e => { e.stopPropagation(); onNext(); }}>›</button>
+    </div>
+  );
+}
+
 function PhotoLayout({ layout, images, title }) {
+  const [lightboxIndex, setLightboxIndex] = useState(null);
+  const total = images.length;
+
   const Placeholder = () => (
     <div style={{ width: '100%', height: '100%', background: 'var(--bg-2)' }} />
   );
@@ -351,6 +387,29 @@ function PhotoLayout({ layout, images, title }) {
       />
     );
   };
+
+  if (layout === 'essay') {
+    return (
+      <>
+        <div className="layout-essay">
+          {images.map((src, i) => (
+            <div key={i} className="le-essay-item" onClick={() => setLightboxIndex(i)}>
+              <img src={src} alt={`${title} ${i + 1}`} loading="lazy" />
+            </div>
+          ))}
+        </div>
+        {lightboxIndex !== null && (
+          <PhotoLightbox
+            images={images}
+            index={lightboxIndex}
+            onClose={() => setLightboxIndex(null)}
+            onPrev={() => setLightboxIndex((lightboxIndex - 1 + total) % total)}
+            onNext={() => setLightboxIndex((lightboxIndex + 1) % total)}
+          />
+        )}
+      </>
+    );
+  }
 
   if (layout === 'editorial') {
     return (
