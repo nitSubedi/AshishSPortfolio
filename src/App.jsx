@@ -274,7 +274,6 @@ function TravelSection() {
               <h4 className="title">{t.name}</h4>
               <span className="year">{t.year}</span>
             </div>
-            <p className="role">{t.subtitle ? `${t.subtitle} — ${t.loc}` : t.loc}</p>
             {views[t.yt] && <span className="view-count">{formatViews(views[t.yt])}</span>}
           </a>
         ))}
