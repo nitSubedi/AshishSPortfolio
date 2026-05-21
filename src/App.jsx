@@ -62,7 +62,7 @@ const PHOTO_SETS = [
     subtitle: 'Journey from Farm to Market',
     years: '2025',
     layout: 'essay',
-    cover: null,
+    cover: '/projects/mr-brown/web/1 Large.jpeg',
     images: [
       '/projects/mr-brown/web/1 Large.jpeg',
       '/projects/mr-brown/web/2 Large.jpeg',
@@ -82,7 +82,7 @@ const PHOTO_SETS = [
   {
     id: 'landscape',
     title: 'Landscape',
-    subtitle: 'Nepal · Mississippi',
+    subtitle: '',
     years: '2020–2025',
     layout: 'wide',
     cover: null,
@@ -311,7 +311,6 @@ function PhotographySection() {
     <section className="tab-panel" data-screen-label="Photography">
       <div className="section-head">
         <h2>Photography</h2>
-        <span className="count">{PHOTO_SETS.length} series</span>
       </div>
       <div className="folder-grid">
         {PHOTO_SETS.map((set, si) => (
@@ -325,16 +324,16 @@ function PhotographySection() {
           >
             <div className="folder-tab" aria-hidden="true" />
             <div className="folder-cover">
-              <div style={{ width: '100%', height: '100%', background: 'var(--bg-2)' }} />
-              <span className="folder-count">{set.images.length} images</span>
+              {set.cover
+                ? <img src={set.cover} alt={set.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                : <div style={{ width: '100%', height: '100%', background: 'var(--bg-2)' }} />
+              }
             </div>
             <div className="folder-meta">
               <div className="folder-title-row">
-                <span className="photo-set-num">{String(si + 1).padStart(2, '0')}</span>
                 <h3>{set.title}</h3>
               </div>
               <p className="folder-sub">{set.subtitle}</p>
-              <p className="folder-years">{set.years}</p>
             </div>
           </div>
         ))}
