@@ -202,6 +202,11 @@ a { color: inherit; text-decoration: none; }
   margin: 0;
   white-space: nowrap;
 }
+.featured .role {
+  margin: -8px 0 0;
+  font-size: 14px;
+  color: var(--ink-3);
+}
 .featured p.synopsis {
   margin: 0;
   font-size: 15px;
@@ -209,6 +214,16 @@ a { color: inherit; text-decoration: none; }
   color: var(--ink-2);
   max-width: 44ch;
   text-wrap: pretty;
+}
+.featured .accolades {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.featured .accolades p.synopsis {
+  color: var(--ink-3);
+  font-size: 13.5px;
+  max-width: none;
 }
 .films-divider {
   height: 1px;
@@ -355,6 +370,13 @@ a { color: inherit; text-decoration: none; }
   color: var(--ink-3);
   margin: 0;
   letter-spacing: 0.01em;
+}
+.card .description {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--ink-2);
+  margin: 4px 0 0;
+  text-wrap: pretty;
 }
 .view-count {
   font-family: var(--mono);

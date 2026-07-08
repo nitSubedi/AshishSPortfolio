@@ -5,34 +5,42 @@ import { FaLinkedin, FaVimeoV, FaInstagram } from 'react-icons/fa';
 const FILMS = [
   {
     id: 'threading',
-    title: 'Threading The American Dream',
+    title: 'Threading the American Dream',
     year: '2026',
     status: 'Work in Progress',
-    role: 'Director · Cinematographer · Editor',
+    role: 'Director, Cinematographer, Editor',
     image: '/media/threading-american-dream.jpg',
     vimeoId: '1194505499',
     vimeoHash: 'e3cea82ba4',
     synopsis:
-      'Threading the American Dream is a 26-minute character-driven documentary with a social message. The film follows the story of Dipa Bhattarai, a Nepali immigrant who came to the American South as an international student to pursue her undergraduate degree. Built a threading business from almost nothing, was shut down by the state cosmetology board, and fought back through a federal lawsuit that ultimately changed Mississippi law.',
+      'Threading the American Dream is a 26-minute character-driven documentary about Dipa Bhattarai, a Nepali immigrant who came to the American South to pursue her undergraduate degree. She built a threading business from almost nothing, was shut down by the Mississippi State Board of Cosmetology, and fought back through a federal lawsuit that ultimately changed Mississippi law.',
+    accolades: [
+      'First Prize, Student Documentary Pitch, Riverrun International Film Festival 2026.',
+      'First Prize, Student Artistic Presentation, Auburn Southern Studies Conference 2026.',
+    ],
     featured: true,
   },
   {
     id: 'griot',
     title: 'Griot of the South',
     year: '',
-    role: '',
+    role: 'Director, Cinematographer, Editor',
     image: '/projects/griot/cover.png',
     vimeoId: '1194469987',
     vimeoHash: 'd1d67f7679',
+    description:
+      "A short musical documentary about John Mohead, a Delta blues singer and songwriter devoted to preserving Southern music and culture. The film follows Mohead's voice and his commitment to keeping a regional tradition alive.",
   },
   {
     id: 'jere',
-    title: 'Jere Allen',
+    title: 'Jere Allen: A Lifetime of Passion and Resilience',
     year: '',
-    role: '',
+    role: 'Director, Cinematographer, Editor',
     image: '/projects/jere-allen/cover.png',
     vimeoId: '941591505',
     vimeoHash: '1f181bebaa',
+    description:
+      'An intimate portrait of Jere Allen, a lifelong painter, told through his life, his studio, and the work he has made across decades. The film sits with a man still devoted to his craft late in life and asks what it means to keep making art when the making is the point.',
   },
 ];
 
@@ -171,7 +179,15 @@ function FilmsSection() {
         </div>
         <div className="body">
           <h3>{featured.title}</h3>
+          {featured.role && <p className="role">{featured.role}</p>}
           <p className="synopsis">{featured.synopsis}</p>
+          {featured.accolades && (
+            <div className="accolades">
+              {featured.accolades.map((line, i) => (
+                <p key={i} className="synopsis">{line}</p>
+              ))}
+            </div>
+          )}
         </div>
       </article>
 
@@ -210,6 +226,7 @@ function FilmCard({ film }) {
           {film.year && <span className="year">{film.year}</span>}
         </div>
         {film.role && <p className="role">{film.role}</p>}
+        {film.description && <p className="description">{film.description}</p>}
       </div>
     </div>
   );
