@@ -1,0 +1,36 @@
+{
+  "projectId": "9727b01f-d957-4028-aacd-aff3ed93359f",
+  "shape": "package",
+  "pkg": "portfolio",
+  "globalName": "PortfolioDS",
+  "cssEntry": "src/index.css",
+  "componentSrcMap": {
+    "App": null,
+    "Contact": null,
+    "Hero": null,
+    "Lightbox": null,
+    "Portfolio": null,
+    "Sidebar": null,
+    "VideoModal": null
+  },
+  "runtimeFontPrefixes": ["Geist", "Instrument Serif"],
+  "libOverrides": {
+    "source-kit.mjs": "synth-entry `export * from` drops default-exported components; also re-export each file's default under its resolved name"
+  },
+  "dtsPropsFor": {
+    "AboutSection": "",
+    "FilmsSection": "",
+    "Footer": "",
+    "PhotographySection": "",
+    "TravelSection": "",
+    "TopBar": "section: 'films' | 'travel' | 'photography' | 'about';\n  setSection: (section: string) => void;",
+    "FilmCard": "film: {\n    id: string;\n    title: string;\n    year?: string;\n    status?: string;\n    role?: string;\n    image?: string;\n    vimeoId?: string;\n    vimeoHash?: string;\n    synopsis?: string;\n    description?: string;\n    accolades?: string[];\n  };",
+    "PhotoLayout": "layout: 'essay' | 'editorial' | 'wide';\n  images: string[];\n  title: string;",
+    "PhotoLightbox": "images: string[];\n  index: number;\n  onClose: () => void;\n  onPrev: () => void;\n  onNext: () => void;"
+  },
+  "overrides": {
+    "PhotoLightbox": { "cardMode": "single", "viewport": "900x600" },
+    "TopBar": { "cardMode": "column" }
+  },
+  "readmeHeader": ".design-sync/conventions.md"
+}

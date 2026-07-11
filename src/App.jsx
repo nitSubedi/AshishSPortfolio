@@ -104,7 +104,7 @@ const PHOTO_SETS = [
 ];
 
 /* ─── TopBar ─────────────────────────────────────────────── */
-function TopBar({ section, setSection }) {
+export function TopBar({ section, setSection }) {
   const items = [
     ['films', 'Films'],
     ['travel', 'Travel Documentaries'],
@@ -149,7 +149,7 @@ function VimeoPlayer({ vimeoId, vimeoHash, title }) {
 }
 
 /* ─── Films section ──────────────────────────────────────── */
-function FilmsSection() {
+export function FilmsSection() {
   const [featuredPlaying, setFeaturedPlaying] = useState(false);
   const featured = FILMS.find(f => f.featured);
   const rest = FILMS.filter(f => !f.featured);
@@ -203,7 +203,7 @@ function FilmsSection() {
   );
 }
 
-function FilmCard({ film }) {
+export function FilmCard({ film }) {
   const [playing, setPlaying] = useState(false);
   const handleClick = () => {
     if (film.vimeoId) setPlaying(true);
@@ -239,7 +239,7 @@ function formatViews(n) {
   return n + ' views';
 }
 
-function TravelSection() {
+export function TravelSection() {
   const [views, setViews] = useState({});
 
   useEffect(() => {
@@ -300,7 +300,7 @@ function TravelSection() {
 }
 
 /* ─── Photography section ────────────────────────────────── */
-function PhotographySection() {
+export function PhotographySection() {
   const [openSet, setOpenSet] = useState(null);
 
   if (openSet) {
@@ -359,7 +359,7 @@ function PhotographySection() {
   );
 }
 
-function PhotoLightbox({ images, index, onClose, onPrev, onNext }) {
+export function PhotoLightbox({ images, index, onClose, onPrev, onNext }) {
   useEffect(() => {
     const handler = (e) => {
       if (e.key === 'Escape') onClose();
@@ -385,7 +385,7 @@ function PhotoLightbox({ images, index, onClose, onPrev, onNext }) {
   );
 }
 
-function PhotoLayout({ layout, images, title }) {
+export function PhotoLayout({ layout, images, title }) {
   const [lightboxIndex, setLightboxIndex] = useState(null);
   const total = images.length;
 
@@ -467,7 +467,7 @@ function PhotoLayout({ layout, images, title }) {
 }
 
 /* ─── About section ──────────────────────────────────────── */
-function AboutSection() {
+export function AboutSection() {
   return (
     <section className="tab-panel" data-screen-label="About">
       <div className="section-head">
@@ -535,7 +535,7 @@ function AboutSection() {
 }
 
 /* ─── Footer ─────────────────────────────────────────────── */
-function Footer() {
+export function Footer() {
   return (
     <footer className="footer">
       <div>© 2026 Ashish Shrestha — All work, all rights reserved.</div>
