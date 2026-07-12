@@ -67,37 +67,55 @@ const PRODUCTION = [
 
 /* ─── Photo sets ─────────────────────────────────────────── */
 const FARM_TO_MARKET = {
-  title: 'Mr. Brown',
-  lede: 'From farm to market.',
-  /* Placeholder intro. Ashish to provide final text. */
-  body: 'Mr. Brown is a local farmer in Water Valley, Mississippi, who has been farming for 43 years following the footsteps of his parents. He grows vegetables, fruits, and herbs, raises livestock, and brings everything to the Oxford community market. This series follows his journey from the land to the people he sells to, and his love for farming.',
+  title: 'Farm to Market',
+  lede: 'Mr. Brown, Water Valley, Mississippi.',
+  body: 'Mr. Brown is a farmer based in Water Valley, Mississippi, continuing a tradition his parents began 43 years ago. He grows mushrooms, vegetables, fruits, and herbs, and raises chickens and goats, doing most of the work himself. Each week he brings his harvest to the Oxford community market, which he sees as a vital way for independent farmers to reach customers directly. This series follows his journey from farm to market, and his enduring love for the work despite its challenges.',
   images: [
-    '/projects/mr-brown/web/1 Large.jpeg',
-    '/projects/mr-brown/web/2 Large.jpeg',
-    '/projects/mr-brown/web/3 Large.jpeg',
-    '/projects/mr-brown/web/4 Large.jpeg',
-    '/projects/mr-brown/web/5 Large.jpeg',
-    '/projects/mr-brown/web/DSC02528 Large.jpeg',
-    '/projects/mr-brown/web/DSC02645 Large.jpeg',
-    '/projects/mr-brown/web/DSC02651 Large.jpeg',
-    '/projects/mr-brown/web/DSC02767 Large.jpeg',
+    { src: '/projects/mr-brown/web/1 Large.jpeg', alt: 'Mr. Brown at work on his farm in Water Valley, Mississippi' },
+    { src: '/projects/mr-brown/web/2 Large.jpeg', alt: 'Mr. Brown tending his crops' },
+    { src: '/projects/mr-brown/web/3 Large.jpeg', alt: 'Rows of vegetables growing on the farm' },
+    { src: '/projects/mr-brown/web/4 Large.jpeg', alt: 'Mr. Brown harvesting produce by hand' },
+    { src: '/projects/mr-brown/web/5 Large.jpeg', alt: 'Fresh harvest gathered from the farm' },
+    { src: '/projects/mr-brown/web/DSC02528 Large.jpeg', alt: 'Mr. Brown at the Oxford community market' },
+    { src: '/projects/mr-brown/web/DSC02645 Large.jpeg', alt: 'Produce laid out for sale at the market' },
+    { src: '/projects/mr-brown/web/DSC02651 Large.jpeg', alt: 'Mr. Brown greeting customers at his market stall' },
+    { src: '/projects/mr-brown/web/DSC02767 Large.jpeg', alt: 'Mr. Brown at the end of a day at the market' },
   ],
 };
 
-const LANDSCAPE_PORTRAITS = {
-  title: 'Landscape & Portraits',
-  body: 'Pictures made between trekking shoots in Nepal and quiet driving weeks across the Mississippi Delta. Most are made just before or after the main film of the day, when the light has gone soft and the work is technically over.',
+const NEPAL = {
+  title: 'What I Saw in Nepal',
+  body: 'A personal documentary series made across Nepal, from the high mountains to the daily life of rural communities. These images sit landscape and portrait side by side: peaks, night skies, and open valleys next to the people, families, and small moments that make up life in the places I come from.',
   images: [
-    '/projects/landscape/DSC00029.jpg',
-    '/projects/landscape/DSC05091.JPG',
-    '/projects/landscape/DSC06773.jpg',
-    '/projects/landscape/DSC06863.jpg',
-    '/projects/landscape/DSC06993.jpg',
-    '/projects/landscape/DSC08078.jpg',
-    '/projects/landscape/DSC08772.JPG',
-    '/projects/landscape/DSC09680.jpg',
-    '/projects/landscape/DSC09771.jpg',
-    '/projects/landscape/DSC09953.jpg',
+    { src: '/projects/nepal/nepal-01-mountain-peak-dawn.jpg', alt: 'Snow-capped Himalayan peak at dawn, pink sky over the mountains' },
+    { src: '/projects/nepal/nepal-02-three-children-village.jpg', alt: 'Three children standing together in a Nepali village' },
+    { src: '/projects/nepal/nepal-03-terraced-valley-clouds.jpg', alt: 'Green terraced valley with clouds rolling over a Himalayan village' },
+    { src: '/projects/nepal/nepal-04-man-holding-child.jpg', alt: 'A man holds a child close, bundled against the cold' },
+    { src: '/projects/nepal/nepal-05-wildflower-meadow-pond.jpg', alt: 'Wildflower meadow with a pond reflecting snow-capped mountains' },
+    { src: '/projects/nepal/nepal-06-figure-mountain-trail.jpg', alt: 'A figure walks a mountain trail carrying a load' },
+    { src: '/projects/nepal/nepal-07-trekker-alpine-lake.jpg', alt: 'A trekker rests beside an alpine lake in the Himalayas' },
+    { src: '/projects/nepal/nepal-08-boy-waving-smiling.jpg', alt: 'A young boy waves and smiles at the camera' },
+    { src: '/projects/nepal/nepal-09-hillside-path-peak.jpg', alt: 'Green hillside path leading toward a snow-capped peak' },
+    { src: '/projects/nepal/nepal-10-tending-cow-lantern-night.jpg', alt: 'A person tends to a cow by lantern light at night' },
+    { src: '/projects/nepal/nepal-11-figure-sunrise-ridge.jpg', alt: 'A lone figure watches the sunrise from a mountain ridge' },
+    { src: '/projects/nepal/nepal-12-two-people-hillside.jpg', alt: 'Two people sit together on a hillside overlooking the mountains' },
+    { src: '/projects/nepal/nepal-13-peaks-dusk-sky.jpg', alt: 'Himalayan peaks glowing under a dusk sky' },
+    { src: '/projects/nepal/nepal-14-milky-way-campsite.jpg', alt: 'The Milky Way over a mountain campsite at night' },
+    { src: '/projects/nepal/nepal-15-star-trails-night-sky.jpg', alt: 'Star trails streaking across the night sky above the mountains' },
+  ],
+};
+
+const ADDITIONAL_WORK = {
+  title: 'Additional Work',
+  body: 'A wider selection of photographs made across places and subjects.',
+  images: [
+    { src: '/projects/additional/additional-festival-performers-night.jpg', alt: 'Musicians and dancers performing at a nighttime festival' },
+    { src: '/projects/additional/additional-basketball-jump-shot.jpg', alt: 'A basketball player leaps for a jump shot outdoors' },
+    { src: '/projects/additional/additional-open-air-market-evening.jpg', alt: 'Vendors and shoppers at an open-air market in the evening' },
+    { src: '/projects/additional/additional-highway-sunset.jpg', alt: 'An open highway stretching toward the sunset' },
+    { src: '/projects/additional/additional-soccer-match.jpg', alt: 'Players compete in an outdoor soccer match' },
+    { src: '/projects/additional/additional-covered-market-stalls.jpg', alt: 'Shoppers browsing stalls inside a covered market' },
+    { src: '/projects/additional/additional-basketball-court-spectators.jpg', alt: 'Players and spectators at an outdoor basketball court' },
   ],
 };
 
@@ -328,7 +346,11 @@ function ProductionPage() {
 }
 
 /* ─── Photography page ───────────────────────────────────── */
-export function PhotoLightbox({ images, index, onClose, onPrev, onNext }) {
+/* Photo entries may be plain strings or { src, alt } objects. */
+const photoSrc = (img) => (typeof img === 'string' ? img : img.src);
+const photoAlt = (img, fallback) => (typeof img === 'string' ? fallback : (img.alt || fallback));
+
+export function PhotoLightbox({ images, index, onClose, onPrev, onNext, title }) {
   useEffect(() => {
     const handler = (e) => {
       if (e.key === 'Escape') onClose();
@@ -344,8 +366,8 @@ export function PhotoLightbox({ images, index, onClose, onPrev, onNext }) {
       <button className="lightbox-close" onClick={onClose}>✕</button>
       <button className="lightbox-prev" onClick={e => { e.stopPropagation(); onPrev(); }}>‹</button>
       <img
-        src={images[index]}
-        alt={`Photo ${index + 1}`}
+        src={photoSrc(images[index])}
+        alt={photoAlt(images[index], `${title} ${index + 1}`)}
         className="lightbox-img"
         onClick={e => e.stopPropagation()}
       />
@@ -361,15 +383,16 @@ export function PhotoEssay({ images, title, small = false }) {
   return (
     <>
       <div className={`layout-essay${small ? ' layout-essay-small' : ''}`}>
-        {images.map((src, i) => (
+        {images.map((img, i) => (
           <div key={i} className="le-essay-item" onClick={() => setLightboxIndex(i)}>
-            <img src={src} alt={`${title} ${i + 1}`} loading="lazy" />
+            <img src={photoSrc(img)} alt={photoAlt(img, `${title} ${i + 1}`)} loading="lazy" />
           </div>
         ))}
       </div>
       {lightboxIndex !== null && (
         <PhotoLightbox
           images={images}
+          title={title}
           index={lightboxIndex}
           onClose={() => setLightboxIndex(null)}
           onPrev={() => setLightboxIndex((lightboxIndex - 1 + total) % total)}
@@ -396,12 +419,22 @@ function PhotographyPage() {
       <div className="films-divider" style={{ margin: '80px 0 0' }} />
 
       <div className="section-head">
-        <h2 className="secondary-head">{LANDSCAPE_PORTRAITS.title}</h2>
+        <h2>{NEPAL.title}</h2>
       </div>
       <div className="folder-caption no-lede">
-        <p className="folder-caption-body">{LANDSCAPE_PORTRAITS.body}</p>
+        <p className="folder-caption-body">{NEPAL.body}</p>
       </div>
-      <PhotoEssay images={LANDSCAPE_PORTRAITS.images} title={LANDSCAPE_PORTRAITS.title} small />
+      <PhotoEssay images={NEPAL.images} title={NEPAL.title} />
+
+      <div className="films-divider" style={{ margin: '80px 0 0' }} />
+
+      <div className="section-head">
+        <h2 className="secondary-head">{ADDITIONAL_WORK.title}</h2>
+      </div>
+      <div className="folder-caption no-lede">
+        <p className="folder-caption-body">{ADDITIONAL_WORK.body}</p>
+      </div>
+      <PhotoEssay images={ADDITIONAL_WORK.images} title={ADDITIONAL_WORK.title} small />
     </section>
   );
 }
